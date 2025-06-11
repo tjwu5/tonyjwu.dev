@@ -12,7 +12,7 @@
 
   --animate-float: float 6s ease-in-out infinite;
   --animate-pulse-subtle: pulse-subtitle 4s ease-in-out infinite;
-  --animate-fade-in: fade-in 0.7s ease-in-out;
+  --animate-fade-in: fade-in 0.7s ease-in-out forwards;
   --animate-fade-in-delay-1: fade-in 0.7s ease-out 0.2s forwards;
   --animate-fade-in-delay-2: fade-in 0.7s ease-out 0.4s forwards;
   --animate-fade-in-delay-3: fade-in 0.7s ease-out 0.6s forwards;
