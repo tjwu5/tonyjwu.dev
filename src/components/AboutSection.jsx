@@ -28,10 +28,10 @@ export const AboutSection = () => {
                         I love working in a group setting, and along with my passion in business studies, I would be a strong addition to any startup with development as well as acceleration of their business. 
                     </p>
                     <p className="text-md text-muted-foreground mb-6">
-                        In my free time, I enjoy working on personal projects, learning and researching about cool tech around the world, or watching the NBA and playing with my dog.
+                        In my free time, I enjoy working on personal projects, learning and researching about cool tech around the world, or watching the NBA (specifically the Golden State Warriors) and playing with my dog. A fun fact about me is that while I am Chinese, I was born in Japan and grew up in Canada!
                     </p>
                     <p className="text-md text-muted-foreground mb-6">
-                        I am always looking for new opportunities to learn and grow, and I am excited to see where my journey in tech will take me!\
+                        I am always looking for new opportunities to learn and grow, and I am excited to see where my journey in tech will take me!
                     </p>
                     <p className="text-md text-muted-foreground mb-6">
                         Feel free to connect with me on my socials!
