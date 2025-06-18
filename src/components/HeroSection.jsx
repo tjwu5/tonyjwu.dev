@@ -6,7 +6,7 @@ export const HeroSection = () => {
             <div className="space-y-6">
                 <h1 className="text-3xl md:text-5xl font-bold tracking-tight">
                     <span className="opacity-0 animate-fade-in">Hi! I'm </span>
-                    <span className="text-primary opacity-0 animate-fade-in-delay-1">Tony </span>
+                    <span className="text-primary opacity-0 animate-fade-in-delay-1">Tony</span>
                     <span className="text-gradient ml-2 opacity-0 animate-fade-in-delay-2">Wu :)</span>
                 </h1>
                 <p className="text-lg text-muted-foreground max-2-2xl mx-auto opacity-0 animate-fade-in-delay-3">
