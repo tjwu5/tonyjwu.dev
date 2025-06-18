@@ -5,7 +5,12 @@ import {ArrowDown} from 'lucide-react';
 export const AboutSection = () => {
     return <section id="about" className="py-24 px-5 relative">
         <div className="container mx-auto max-w-8xl">
-            <h1 className="text-5xl font-semibold mb-20">A little bit about me...</h1>
+            <h1 className="text-5xl font-semibold text-primary mb-15">
+                <span>
+                    <span className="text-glow text-foreground">A little bit about </span>me...
+                </span>
+            </h1>
+
             <div className="flex flex-col md:flex-row items-center md:items-start gap-15">
     
                 {/* Profile Image on the Left */}
