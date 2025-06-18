@@ -5,7 +5,7 @@ import {ArrowDown} from 'lucide-react';
 export const AboutSection = () => {
     return <section id="about" className="py-24 px-5 relative">
         <div className="container mx-auto max-w-8xl">
-            <h1 className="text-3xl font-semibold mb-10">A Little Bit About Me...</h1>
+            <h1 className="text-5xl font-semibold mb-20">A little bit about me...</h1>
             <div className="flex flex-col md:flex-row items-center md:items-start gap-15">
     
                 {/* Profile Image on the Left */}
@@ -13,7 +13,7 @@ export const AboutSection = () => {
                 <img
                     src={myPhoto}
                     alt="Tony Wu"
-                    className="w-48 h-48 object-cover rounded-full border border-gray-300 shadow"
+                    className="w-75 h-75 object-cover rounded-full border border-gray-300 shadow"
                 />
                 </div>
 
@@ -24,10 +24,15 @@ export const AboutSection = () => {
                     </p>
                     <p className="text-md text-muted-foreground mb-6">
                         I have built a strong foundation in programming languages such as Python and C/C++, and am currently expanding my skills in web development with HTML/CSS/Javascript, React.js and Tailwind. 
-                        I love working in a group setting, and along with my passion in business studies, I would be a strong addition to any startup with development as well as acceleration of their business. 
                     </p>
                     <p className="text-md text-muted-foreground mb-6">
-                        In my free time, I enjoy working on personal projects, learning and researching about cool tech around the world, as well as watching the NBA (specifically the Golden State Warriors) and playing with my 3-year-old dog Ori. A fun fact about me is that while I am Chinese, I was born in Japan and grew up in Canada!
+                    I love working in a group setting, and along with my passion in business studies, I would be a strong addition to any startup with development as well as acceleration of their business. 
+                    </p>
+                    <p className="text-md text-muted-foreground mb-6">
+                        In my free time, I enjoy working on personal projects, learning and researching about cool tech around the world. However, most of the time you will find me either playing Teamfight Tactics (TFT) and League of Legends with my buddies, or watching the NBA (specifically the Golden State Warriors) and playing with my 3-year-old dog Ori. 
+                    </p>
+                    <p className="text-md text-muted-foreground mb-6">
+                    A fun fact about me is that while I am Chinese, I was born in Japan and grew up in Canada!
                     </p>
                     <p className="text-md text-muted-foreground mb-6">
                         I am always looking for new opportunities to learn and grow, and I am excited to see where my journey in tech will take me!
@@ -35,7 +40,7 @@ export const AboutSection = () => {
                     <p className="text-md text-muted-foreground mb-6">
                         Feel free to connect with me on my socials!
                     </p>
-                    <div className="flex justify-center md:justify-start mt-6">
+                    <div className="flex justify-center md:justify-start mt-10 mb-15">
                         <SocialButtons />
                     </div>
                 </div>
