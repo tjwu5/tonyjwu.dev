@@ -6,7 +6,6 @@ const frontendSkills = [
     { name: "JavaScript", level: 20 },
     { name: "React.js", level: 25 },
     { name: "Tailwind", level: 25 },
-    { name: "PENIS SIZE", level: 100}
 ]
 
 const backendSkills = [
