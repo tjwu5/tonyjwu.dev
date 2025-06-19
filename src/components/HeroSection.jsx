@@ -12,12 +12,6 @@ export const HeroSection = () => {
                 <p className="text-lg text-muted-foreground max-2-2xl mx-auto opacity-0 animate-fade-in-delay-3">
                     SFU Computing Science/BBA student 
                 </p> 
-
-                {/* <div className="pt-4 opacity-0 animate-fade-in-delay-4">
-                    <a href="#projects" className="cosmic-button">
-                    View my Work
-                    </a>
-                </div> */}
             </div>
         </div>
 

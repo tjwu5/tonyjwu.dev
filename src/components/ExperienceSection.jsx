@@ -6,12 +6,16 @@ import pivot2 from '../assets/images/pivot2.jpg';
 export const ExperienceSection = () => {
     return <section id="experiences" className="py-20 bg-background">
         <div className="container">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-glow">Experiences</h2>               
+            <h2 className="text-5xl font-semibold text-primary mt-10 mb-10">
+                <span>
+                    <span className="text-foreground">My </span>Experiences
+                </span>
+            </h2>              
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Case Competition */}
                 <div className="p-6 bg-card rounded-lg shadow-md">
                     <div>
-                        <h3 className="text-xl font-semibold">PIVOT BMT Case Competition</h3>
+                        <h3 className="text-xl font-semibold text-glow">PIVOT BMT Case Competition</h3>
                         <p className="text-muted-foreground">SFU PIVOT {"\u2014"} February 2025</p>
                         <p className="mt-2 text-left">• Collaborated with a team of 4 to analyze a case on SAP Concur, focusing on how to bring reporting expenses to new levels, and develop a solution.</p>
                         <p className="mt-2 text-left">• Conducted market research, financial analysis, and strategic planning regarding the company and market to address the case challenges.</p>
@@ -36,7 +40,7 @@ export const ExperienceSection = () => {
                 {/* Enactus */}
                 <div className="p-6 bg-card rounded-xl shadow-md">
                     <div>
-                        <h3 className="text-xl font-semibold">Forward Vision Pitch Competition</h3>
+                        <h3 className="text-xl font-semibold text-glow">Forward Vision Pitch Competition</h3>
                         <p className="text-muted-foreground">SFU Enactus {"\u2014"} February 2025</p>
                         <p className="mt-2 text-left">• Focused on one of United Nations' Sustainable Development Goal to create a solution to a local challenge that is both feasible and impactful with a teammate and mentor.</p>
                         <p className="mt-2 text-left">• Finalized a mulit-purpose application to promote and raise awareness of local dog shelters and useful tools for existing owners.</p>
@@ -61,7 +65,7 @@ export const ExperienceSection = () => {
                 {/* Hackathon */}
                 <div className="p-6 bg-card rounded-xl shadow-md">
                     <div> 
-                        <h3 className="text-xl font-semibold">ChaosHacks Hackathon</h3>
+                        <h3 className="text-xl font-semibold text-glow">ChaosHacks Hackathon</h3>
                         <p className="text-muted-foreground">SFU Software Systems SystemsHacks {"\u2014"} March 2024</p>
                         <p className="mt-2 text-left">• Developed a website using HTML and JavaScript, allowing users to choose their desired music genres from a list of options to create a chaotic mix and playback a preset audio file.</p>
                         <p className="mt-2 text-left">• Utilized Adobe After Effects to combine music from different genres.</p>
@@ -82,7 +86,7 @@ export const ExperienceSection = () => {
                 {/* To be continued */}
                 <div className="p-6 bg-card rounded-xl shadow-md h-64 flex items-center justify-center text-center">
                     <div style={{ animation: "float 3s ease-in-out infinite" }}>
-                        <h3 className="text-xl font-semibold">To Be Continued...</h3>
+                        <h3 className="text-xl font-semibold text-glow">To Be Continued...</h3>
                         <p className="text-muted-foreground">Stay tuned for more experiences!</p>
                     </div>
                 </div>
