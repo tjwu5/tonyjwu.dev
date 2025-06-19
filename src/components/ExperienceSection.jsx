@@ -5,8 +5,8 @@ import pivot2 from '../assets/images/pivot2.jpg';
 
 export const ExperienceSection = () => {
     return <section id="experiences" className="py-20 bg-background">
-            <div className="container max-w-10xl mx-auto px-4">
-                <h2 className="text-3xl md:text-4xl font-bold text-center mb-10">Experiences</h2>
+            <div className="container">
+                <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-glow">Experiences</h2>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
@@ -83,12 +83,11 @@ export const ExperienceSection = () => {
 
                     {/* To be continued */}
                     <div className="p-6 bg-card rounded-xl shadow-md h-64 flex items-center justify-center text-center">
-                        <div>
+                        <div style={{ animation: "float 3s ease-in-out infinite" }}>
                             <h3 className="text-xl font-semibold">To Be Continued...</h3>
                             <p className="text-muted-foreground">Stay tuned for more experiences!</p>
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>
