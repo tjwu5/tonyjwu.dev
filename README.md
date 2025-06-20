@@ -1,12 +1,33 @@
-# React + Vite
+# CMPT 276 Mini Project 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Resources/Open Source Code Used in My Project
+[Resource 1: Tutorial I used for majority of website setup and learning the basics of React/Tailwind](https://youtu.be/ifOJ0R5UQOc?si=XE11-qhQhTAS3VqZ)
 
-Currently, two official plugins are available:
+[Resource 2: Used for Socials Buttons](https://uiverse.io/aadium/proud-swan-48)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[Resource 3: Used for Skills Bar](https://uiverse.io/Juanes200122/yellow-dog-17)
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Why I chose MIT License
+
+When I first set up my repository, I chose it because it was the one that was introduced to us in class. However, after doing some further research on my own, and comparing it with some of the other licenses, it did feel the most appropriate. As one of the most popular open-source licenses, it allows others to use my code freely to do whatever they wish, still remaining credit for myself, and also protects me from any liability issues that my code may end up causing. 
+
+# Wireframes
+
+![Hero Section Wireframe](assets/wireframes/hero.jpg)
+- Nav bar at the top, along with logo
+- Greeting message
+- Can include additional buttons like contact and resume download if time allows
+
+![About Section Wirefram](assets/wireframes/about.jpg)
+- Profile image
+- Summary of an introduction of me
+
+![Skills Section Wireframe](assets/wireframes/skills.jpg)
+- List of skills and proficiency, both technical and non-technical
+
+![Experiences Section Wireframe](assets/wireframes/experiences.jpg)
+- List out all my experiences -- each with image(s) and link to work
+
+![Contact Section Wireframe](assets/wireframes/contact.jpg)
+- Contact information

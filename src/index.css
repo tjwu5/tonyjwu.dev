@@ -81,17 +81,6 @@
   text-shadow: 0 0 10px rgba(167, 139, 250, 0.5)
 }
 
-@utility card-hover {
-  @apply transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg;
-}
-
-@utility gradient-border {
-  @apply relative rounded-md;
-  background: linear-gradient(to right, hsl(var(--card)), hsl(var(--card)))
-  background-clip: padding-box;
-  border: 1px solid transparent;
-}
-
 #root {
   max-width: 100%;
   margin: 0 auto;

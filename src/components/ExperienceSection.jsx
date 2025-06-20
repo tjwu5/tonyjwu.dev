@@ -22,8 +22,8 @@ export const ExperienceSection = () => {
                         <p className="mt-2 text-left">• Presented our findings and recommendations to a panel of judges, receiving positive feedback for our innovative approach.</p>
                     </div>
                     <div className="grid grid-cols-2 gap-3 max-w-3xl mx-auto mt-10">
-                        <img src={pivot1} alt="Top right" className="scale-100 rounded-lg shadow-md" />
-                        <img src={pivot2} alt="Bottom left" className="scale-100 rounded-lg shadow-md" />
+                        <img src={pivot1} alt="PIVOT 2025 Team Presenting" className="scale-100 rounded-lg shadow-md" />
+                        <img src={pivot2} alt="PIVOT 2025 Team Picture" className="scale-100 rounded-lg shadow-md" />
                     </div>
                     <div className="p-2 bg-card rounded-lg shadow-md mt-4">
                         <a
@@ -47,8 +47,8 @@ export const ExperienceSection = () => {
                         <p className="mt-2 text-left">• Presented our pitch to a panel of judges in a Dragon's Den style event, seeking interest and investments.</p>
                     </div>
                     <div className="grid grid-cols-2 gap-3 max-w-3xl mx-auto mt-10">
-                        <img src={enactus1} alt="Top right" className="scale-100 rounded-lg shadow-md" />
-                        <img src={enactus2} alt="Bottom left" className="scale-100 rounded-lg shadow-md" />
+                        <img src={enactus1} alt="FV 2025 Team Brainstorming" className="scale-100 rounded-lg shadow-md" />
+                        <img src={enactus2} alt="FV 2025 Team Presenting" className="scale-100 rounded-lg shadow-md" />
                     </div>
                     <div className="p-2 bg-card rounded-lg shadow-md mt-4">
                         <a
