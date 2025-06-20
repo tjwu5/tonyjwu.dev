@@ -2,6 +2,8 @@ import myPhoto from '../assets/images/profilephoto.jpg';
 import SocialButtons from './SocialButtons';
 import {ArrowDown} from 'lucide-react';
 
+// Used Resource 1
+
 export const AboutSection = () => {
     return <section id="about" className="py-24 px-5 relative">
         <div className="container mx-auto max-w-8xl">

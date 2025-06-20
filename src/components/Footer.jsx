@@ -1,5 +1,7 @@
 import { ArrowUp } from "lucide-react";
 
+// Used Resource 1
+
 export const Footer = () => {
     return (
         <footer className="relative py-12 px-4 bg-card border-t border-border mt-12 pt-8">

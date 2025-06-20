@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
+// Used Resource 3
+
 const SkillBar = ({ skills = [] }) => {
   return (
     <div className="bg-background text-white rounded-lg p-6 w-full shadow-md">

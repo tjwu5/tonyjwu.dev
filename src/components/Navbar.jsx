@@ -1,6 +1,8 @@
 import { cn } from "@/lib/utils"   
 import { useState, useEffect } from "react";
 
+// Used Resource 1
+
 const navItems = [
     {name: 'Home', href: "#hero"},
     {name: 'About', href: "#about"},

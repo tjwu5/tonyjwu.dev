@@ -1,6 +1,7 @@
 import { Mail,Phone,MapPin, Instagram, Linkedin, Github, Facebook, Send } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+// Used Resource 1
 
 export const ContactSection = () => {
     

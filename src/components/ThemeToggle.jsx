@@ -2,6 +2,8 @@ import { Moon, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils'; // Assuming you have a utility function for class names
 
+// Used Resource 1
+
 export const ThemeToggle = () => {
     const [isDarkMode, setIsDarkMode] = useState(false);
 

@@ -1,5 +1,7 @@
 import SkillBar from "./Skillsbar"
 
+// Used Resource 3
+
 const frontendSkills = [
     { name: "HTML", level: 60 },
     { name: "CSS", level: 60 },
@@ -94,8 +96,7 @@ export const SkillsSection = () => {
                         <SkillBar skills={otherSkills2}/>
                     </div>
                 </div>
-            </div>
-            
+            </div> 
         </div>
     </section>
 }

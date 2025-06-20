@@ -1,5 +1,7 @@
 import React from 'react';
 
+// Used Resource 1
+
 const SocialButtons = () => {
   return (
     <div className="flex justify-center items-center space-x-4">
