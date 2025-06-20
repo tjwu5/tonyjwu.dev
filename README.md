@@ -1,7 +1,7 @@
 # CMPT 276 Mini Project 
 
 # AI Declaration Form
-[View AI Declaration PDF](https://tjwu5.github.io/Mini_Project_AI_Declaration_Tony_Wu_301556479.pdf)
+[View AI Declaration PDF](public/Mini_Project_AI_Declaration_Tony_Wu_301556479.pdf)
 
 # Why I chose MIT License
 When I first set up my repository, I chose it because it was the one that was introduced to us in class. However, after doing some further research on my own, and comparing it with some of the other licenses, it did feel the most appropriate. As one of the most popular open-source licenses, it allows others to use my code freely to do whatever they wish, still remaining credit for myself, and also protects me from any liability issues that my code may end up causing. 
