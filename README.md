@@ -14,20 +14,20 @@ When I first set up my repository, I chose it because it was the one that was in
 
 # Wireframes
 
-![Hero Section Wireframe](assets/wireframes/hero.jpg)
+![Hero Section Wireframe](src/assets/wireframes/hero.jpg)
 - Nav bar at the top, along with logo
 - Greeting message
 - Can include additional buttons like contact and resume download if time allows
 
-![About Section Wirefram](assets/wireframes/about.jpg)
+![About Section Wirefram](src/assets/wireframes/about.jpg)
 - Profile image
 - Summary of an introduction of me
 
-![Skills Section Wireframe](assets/wireframes/skills.jpg)
+![Skills Section Wireframe](src/assets/wireframes/skills.jpg)
 - List of skills and proficiency, both technical and non-technical
 
-![Experiences Section Wireframe](assets/wireframes/experiences.jpg)
+![Experiences Section Wireframe](src/assets/wireframes/experiences.jpg)
 - List out all my experiences -- each with image(s) and link to work
 
-![Contact Section Wireframe](assets/wireframes/contact.jpg)
+![Contact Section Wireframe](src/assets/wireframes/contact.jpg)
 - Contact information
