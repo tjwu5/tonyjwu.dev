@@ -1,102 +1,82 @@
-import SkillBar from "./Skillsbar"
+import SkillBar from "./SkillBar.jsx"
 
-// Used Resource 3
-
-const frontendSkills = [
-    { name: "HTML", level: 60 },
-    { name: "CSS", level: 60 },
-    { name: "JavaScript", level: 20 },
-    { name: "React.js", level: 25 },
-    { name: "Tailwind", level: 25 },
+const webDevSkills = [
+    { name: "JavaScript (ES6+)", level: 90 },
+    { name: "React", level: 85 },
+    { name: "Node.js", level: 80 },
+    { name: "TailwindCSS", level: 90 },
+    { name: "HTML/CSS", level: 95 },
 ]
 
-const backendSkills = [
-    { name: "Python", level: 70 },
-    { name: "C/C++", level: 75 },
-    { name: "Kotlin", level: 10 },
+const dataAndAISkills = [
+    { name: "Python", level: 90 },
+    { name: "Scikit-learn", level: 80 },
+    { name: "pandas", level: 85 },
+    { name: "LightGBM", level: 75 },
+    { name: "SQL (MySQL)", level: 80 },
 ]
 
-const operatingSystems = [
-    { name: "MacOS 26 Tahoe", level: 90 },
-    { name: "Windows 11", level: 75 },
-    { name: "Linux Ubuntu", level: 50 },
-    { name: "Git/GitHub", level: 40 },
-]
-
-const otherSkills1 = [
-    { name: "UI/UX Design", level: 75 },
-    { name: "Creativity", level: 90 },
-    { name: "Problem Solving", level: 80 },
-    { name: "Critical Thinking", level: 90 },
-]
-
-
-const otherSkills2 = [
-    { name: "Communication", level: 90 },
-    { name: "Time Management", level: 75 },
-    { name: "Teamwork/Leadership", level: 85 },
-    { name: "Adaptability", level: 80 },
+const infrastructureSkills = [
+    { name: "AWS", level: 70 },
+    { name: "Docker", level: 75 },
+    { name: "Git/GitHub Actions", level: 85 },
+    { name: "Linux (Ubuntu)", level: 80 },
+    { name: "C/C++", level: 80 },
 ]
 
 export const SkillsSection = () => {
     return <section id="skills" className="py-20 bg-background">
         <div className="container">
-            <h2 className="text-5xl md:text-5xl font-bold text-center mt-10 mb-10 text-primary">
-                <span>
-                    <span className="text-foreground">My </span>Skills
-                </span>
+            <h2 className="text-5xl font-bold text-center mt-10 mb-10 text-primary">
+                <span className="text-foreground">My </span>Skills
             </h2>
+            
             <div className="p-6 bg-card rounded-lg shadow-md">
                 <h2 className="text-2xl text-glow font-semibold mb-6 text-center">
-                    Technical Skills
+                    Technical Expertise
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {/* Frontend Skills */}
+                    {/* Web Development */}
                     <div>
                         <h3 className="text-lg font-semibold mb-4 text-primary">
-                            <span>
-                                <span className="text-glow text-foreground">Frontend</span> Languages
-                            </span>
+                            <span className="text-glow text-foreground">Web</span> Development
                         </h3>
-                        <SkillBar skills={frontendSkills}/>
+                        <SkillBar skills={webDevSkills}/>
                     </div>
 
-                    {/* Backend Skills */}
+                    {/* Data Science & AI */}
                     <div>
                         <h3 className="text-lg font-semibold mb-4 text-primary">
-                            <span>
-                                <span className="text-glow text-foreground">Backend</span> Languages
-                            </span>
+                            <span className="text-glow text-foreground">AI &</span> Data Science
                         </h3>
-                        <SkillBar skills={backendSkills}/>
+                        <SkillBar skills={dataAndAISkills}/>
                     </div>
                     
-                    {/* Operating Systems */}
+                    {/* Tools & Infrastructure */}
                     <div>
                         <h3 className="text-lg font-semibold mb-4 text-primary">
-                            <span>
-                                <span className="text-glow text-foreground">Tools/Operating </span>Systems
-                            </span>
+                            <span className="text-glow text-foreground">Cloud &</span> Infrastructure
                         </h3>
-                        <SkillBar skills={operatingSystems}/>
+                        <SkillBar skills={infrastructureSkills}/>
                     </div>
                 </div>
             </div>
             
+            {/* Design & Leadership (Replacing "Other Skills") */}
             <div className="p-6 bg-card rounded-lg shadow-md mt-5">
                 <h2 className="text-2xl text-glow font-semibold mb-6 text-center">
-                    Other Skills
+                    Design & Product Management
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Other Skills */}
-                    <div>
-                        <SkillBar skills={otherSkills1}/>
-                    </div>
-                    <div>
-                        <SkillBar skills={otherSkills2}/>
-                    </div>
+                <div className="flex flex-wrap justify-center gap-4">
+                    {/* Use these as simple badges/tags instead of bars */}
+                    {["Figma", "Adobe Creative Cloud", "UI/UX Design", "PRD Writing", "Agile/Kanban", "User Research"].map((skill) => (
+                        <span key={skill} className="px-4 py-2 bg-background border border-primary/20 rounded-full text-sm font-medium hover:bg-primary/10 transition-colors">
+                            {skill}
+                        </span>
+                    ))}
                 </div>
             </div> 
         </div>
     </section>
 }
+

@@ -27,16 +27,16 @@ export const AboutSection = () => {
                 {/* Text on the Right */}
                 <div className="space-y-6 text-center md:text-left">
                     <p className="text-lg text-muted-foreground mb-6">
-                        I'm a 3rd year Computing Science student at Simon Fraser University, pursuing a Major in Computing Science and a Minor in Business Administrations. I have a passion for everything tech related, currently invested in software development and UI/UX design, and I'm always eager to learn new technologies and improve!
+                        I'm a 4th year Computing Science student at Simon Fraser University, pursuing a Major in Computing Science and a Minor in Business Administrations. I have a passion for everything tech related, currently invested in software development and product management, and I'm always eager to learn new technologies and improve!
                     </p>
                     <p className="text-lg text-muted-foreground mb-6">
-                        I have built a strong foundation in programming languages such as Python and C/C++, and am currently expanding my skills in web development with HTML/CSS/Javascript, React.js and Tailwind. 
+                        I have built a strong foundation in programming languages such as Python and C/C++, and am currently focusing on expanding my skills to be a product manager! 
                     </p>
                     <p className="text-lg text-muted-foreground mb-6">
                     I love working in a group setting, and along with my passion in business studies, I would be a strong addition to any startup with development as well as acceleration of their business. 
                     </p>
                     <p className="text-lg text-muted-foreground mb-6">
-                        In my free time, I enjoy working on personal projects, learning and researching about cool tech around the world. However, most of the time you will find me either playing Teamfight Tactics (TFT) and League of Legends with my buddies, or watching the NBA (specifically the Golden State Warriors) and playing with my 3-year-old dog Ori. 
+                        In my free time, I enjoy working on personal projects, learning and researching about cool tech around the world. If I'm not doing that, you will find me either playing badminton, watching the NBA, or taking on a new adventure with my 3-year-old dog. I've also recently picked up pickleball!
                     </p>
                     <p className="text-lg text-muted-foreground mb-6">
                     A fun fact about me is that while I am Chinese, I was born in Japan and grew up in Canada!
