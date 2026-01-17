@@ -17,7 +17,7 @@ export const HeroSection = () => {
 
                 <div className="flex justify-center gap-4 opacity-0 animate-fade-in-delay-2">
                     <a
-                        href="/resume.pdf"
+                        href="/Resume_TonyWu.pdf"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center px-4 py-2 rounded-md bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
