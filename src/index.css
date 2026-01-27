@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap");
 
 @theme {
   --color-border: hsl(var(--border));
@@ -27,27 +28,36 @@
 
 @layer base {
   :root {
-  --background: 210 40% 98%;
-  --foreground: 222 47% 11%;
+  --os-bg: #0b0f14;
+  --os-panel: #0f141a;
+  --os-border: #d1d5db;
+  --os-text: #f8fafc;
+  --os-muted: #cbd5e1;
+  --os-accent: #6ee7a8;
+  --os-accent-2: #facc15;
+  --os-danger: #ef4444;
 
-  --card: 0 0% 100%;
+  --background: 215 36% 6%;
+  --foreground: 210 40% 98%;
 
-  --primary: 200 100% 60%; 
+  --card: 215 36% 8%;
+
+  --primary: 156 63% 67%;
   --primary-foreground: 210 40% 98%;
 
-  --border: 214 32% 91%;
+  --border: 214 20% 80%;
 }
 
   .dark {
-    --background: 222 47% 4%;
-    --foreground: 213 31% 91%;
+    --background: 215 36% 6%;
+    --foreground: 210 40% 98%;
 
-    --card: 222 47% 8%;
+    --card: 215 36% 8%;
 
-    --primary: 200 100% 65%;
-    --primary-foreground: 213 31% 91%;
+    --primary: 156 63% 67%;
+    --primary-foreground: 210 40% 98%;
 
-    --border: 217 33% 20%;
+    --border: 214 20% 80%;
   }
 
   * {
@@ -61,6 +71,8 @@
   body {
     @apply bg-background text-foreground transition-colors duration-300;
     font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    cursor: default;
   }
 }
 
@@ -86,4 +98,176 @@
   margin: 0 auto;
   padding: 0;
   text-align: center;
+}
+
+.os-screen {
+  background-color: var(--os-bg);
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: -1px -1px;
+}
+
+.os-accent {
+  color: var(--os-accent);
+}
+
+.os-panel {
+  border-color: var(--os-border);
+  background-color: var(--os-panel);
+}
+
+.os-window {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 120ms ease-out, transform 120ms ease-out;
+}
+
+.os-window--open {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.os-boot {
+  border-color: var(--os-border);
+  background-color: rgba(10, 14, 20, 0.92);
+  transition: opacity 200ms ease-out, transform 200ms ease-out;
+}
+
+.os-boot--dimmed {
+  opacity: 0.35;
+  transform: translate(-50%, -50%) scale(0.98);
+  background-color: rgba(10, 14, 20, 0.9);
+  box-shadow: none;
+}
+
+.os-boot--active {
+  position: relative;
+  border-color: color-mix(in srgb, var(--os-accent) 35%, var(--os-border));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--os-panel) 88%, var(--os-accent) 12%),
+    var(--os-panel)
+  );
+  box-shadow:
+    inset 0 0 18px color-mix(in srgb, var(--os-accent) 18%, transparent),
+    0 0 14px color-mix(in srgb, var(--os-accent) 18%, transparent);
+  animation: panel-glow-pulse 4.6s ease-in-out infinite;
+}
+
+.os-boot--active::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    color-mix(in srgb, var(--os-accent) 10%, transparent) 45%,
+    transparent 70%
+  );
+  opacity: 0.08;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: panel-scan 8s linear infinite;
+}
+
+@keyframes panel-glow-pulse {
+  0%, 100% {
+    box-shadow:
+      inset 0 0 10px color-mix(in srgb, var(--os-accent) 14%, transparent),
+      0 0 8px color-mix(in srgb, var(--os-accent) 12%, transparent);
+    border-color: color-mix(in srgb, var(--os-accent) 25%, var(--os-border));
+    filter: brightness(0.98);
+  }
+  50% {
+    box-shadow:
+      inset 0 0 22px color-mix(in srgb, var(--os-accent) 26%, transparent),
+      0 0 18px color-mix(in srgb, var(--os-accent) 22%, transparent);
+    border-color: color-mix(in srgb, var(--os-accent) 45%, var(--os-border));
+    filter: brightness(1.03);
+  }
+}
+
+@keyframes panel-scan {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .os-boot--active {
+    animation: none;
+  }
+  .os-boot--active::after {
+    animation: none;
+  }
+}
+
+.os-text {
+  color: var(--os-text);
+}
+
+.os-muted {
+  color: var(--os-muted);
+}
+
+.os-border {
+  border-color: var(--os-border);
+}
+
+.os-topbar {
+  background-color: rgba(7, 10, 14, 0.9);
+  border-color: var(--os-border);
+}
+
+.os-button {
+  border-color: var(--os-border);
+  color: var(--os-text);
+  background-color: rgba(6, 9, 13, 0.6);
+}
+
+.os-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.os-titlebar-glow {
+  border-color: color-mix(in srgb, var(--os-accent) 25%, var(--os-border));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--os-panel) 86%, var(--os-accent) 14%),
+    var(--os-panel)
+  );
+  box-shadow:
+    inset 0 0 10px color-mix(in srgb, var(--os-accent) 14%, transparent),
+    0 0 8px color-mix(in srgb, var(--os-accent) 12%, transparent);
+}
+
+.os-titlebar-glow--active {
+  border-color: color-mix(in srgb, var(--os-accent) 40%, var(--os-border));
+  box-shadow:
+    inset 0 0 14px color-mix(in srgb, var(--os-accent) 22%, transparent),
+    0 0 12px color-mix(in srgb, var(--os-accent) 18%, transparent);
+}
+
+.os-titlebar-glow--inactive {
+  border-color: color-mix(in srgb, var(--os-accent) 18%, var(--os-border));
+  box-shadow:
+    inset 0 0 8px color-mix(in srgb, var(--os-accent) 10%, transparent),
+    0 0 6px color-mix(in srgb, var(--os-accent) 8%, transparent);
+}
+
+.os-resize-handle {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 14px;
+  height: 14px;
+  border-right: 2px solid color-mix(in srgb, var(--os-accent) 45%, transparent);
+  border-bottom: 2px solid color-mix(in srgb, var(--os-accent) 45%, transparent);
+  opacity: 0.7;
+  cursor: nwse-resize;
 }

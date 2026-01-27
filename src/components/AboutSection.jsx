@@ -1,63 +1,55 @@
 import myPhoto from '../assets/images/profilephoto.jpg';
 import SocialButtons from './SocialButtons';
-import {ArrowDown} from 'lucide-react';
 
 // Used Resource 1
 
 export const AboutSection = () => {
-    return <section id="about" className="py-24 px-5 relative">
-        <div className="container mx-auto max-w-8xl">
-            <h1 className="text-5xl font-semibold text-primary mt-10 mb-10">
-                <span>
-                    <span className="text-foreground">A little bit about </span>me...
-                </span>
-            </h1>
-
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-15">
-    
-                {/* Profile Image on the Left */}
-                <div className="flex-shrink-0">
-                <img
-                    src={myPhoto}
-                    alt="Tony Wu"
-                    className="w-75 h-75 object-cover rounded-full border border-gray-300 shadow"
-                />
+    return (
+        <section id="about" className="py-6">
+            <div className="flex flex-col gap-6">
+                <div className="flex items-start justify-between gap-4 border-b border-border pb-4">
+                    <div>
+                        <p className="text-xs os-muted">PROFILE CARD</p>
+                        <h1 className="text-2xl font-semibold os-text">Tony Wu</h1>
+                        <p className="text-sm os-muted">STATUS: ACTIVE · LAST UPDATED: JAN 2026</p>
+                    </div>
+                    <img
+                        src={myPhoto}
+                        alt="Tony Wu"
+                        className="h-24 w-24 rounded-full border border-border object-cover"
+                    />
                 </div>
 
-                {/* Text on the Right */}
-                <div className="space-y-6 text-center md:text-left">
-                    <p className="text-lg text-muted-foreground mb-6">
-                        I'm a 4th year Computing Science student at Simon Fraser University, pursuing a Major in Computing Science and a Minor in Business Administrations. I have a passion for everything tech related, currently invested in software development and product management, and I'm always eager to learn new technologies and improve!
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div className="border border-border p-4">
+                        <p className="text-xs os-muted">SUMMARY</p>
+                        <p className="mt-2 text-sm os-text">
+                            4th year Computing Science student at Simon Fraser University pursuing a
+                            Business Administration minor. Focused on software development and product
+                            management with a strong foundation in Python and C/C++.
+                        </p>
+                    </div>
+                    <div className="border border-border p-4">
+                        <p className="text-xs os-muted">QUICK FACTS</p>
+                        <ul className="mt-2 space-y-2 text-sm os-text">
+                            <li>LOCATION: Vancouver, BC</li>
+                            <li>INTERESTS: Product, UX, data-driven apps</li>
+                            <li>HOBBIES: Badminton, basketball, drawing, hiking</li>
+                            <li>FUN FACT: Although I'm Chinese, I was born in Japan!</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div className="border border-border p-4">
+                    <p className="text-xs os-muted">CONNECT</p>
+                    <p className="mt-2 text-sm os-text">
+                        Feel free to connect with me through my socials!
                     </p>
-                    <p className="text-lg text-muted-foreground mb-6">
-                        I have built a strong foundation in programming languages such as Python and C/C++, and am currently focusing on expanding my skills to be a product manager! 
-                    </p>
-                    <p className="text-lg text-muted-foreground mb-6">
-                    I love working in a group setting, and along with my passion in business studies, I would be a strong addition to any startup with development as well as acceleration of their business. 
-                    </p>
-                    <p className="text-lg text-muted-foreground mb-6">
-                        In my free time, I enjoy working on personal projects, learning and researching about cool tech around the world. If I'm not doing that, you will find me either playing badminton, watching the NBA, or taking on a new adventure with my 3-year-old dog. I've also recently picked up pickleball!
-                    </p>
-                    <p className="text-lg text-muted-foreground mb-6">
-                    A fun fact about me is that while I am Chinese, I was born in Japan and grew up in Canada!
-                    </p>
-                    <p className="text-lg text-muted-foreground mb-6">
-                        I am always looking for new opportunities to learn and grow, and I am excited to see where my journey in tech will take me!
-                    </p>
-                    <p className="text-lg text-muted-foreground mb-6">
-                        Feel free to connect with me on my socials!
-                    </p>
-                    <div className="flex justify-center md:justify-start mt-15 mb-30">
+                    <div className="mt-3 flex justify-start">
                         <SocialButtons />
                     </div>
                 </div>
             </div>
-            <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
-            <span className="text-sm text-muted-foreground mb-2">
-                Keep scrolling to see my skills and experiences!
-            </span>
-            <ArrowDown className="h-5 w-5 text-primary"/>
-        </div>
-        </div>
-    </section>
-}
+        </section>
+    );
+};
