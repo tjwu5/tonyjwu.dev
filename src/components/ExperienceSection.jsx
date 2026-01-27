@@ -45,6 +45,7 @@ export const ExperienceSection = () => {
             </div>
           </div>
 
+
           {/* EasyChart */}
           <div className="p-6 bg-card rounded-xl shadow-md flex flex-col">
             <div className="flex-grow overflow-y-auto">
