@@ -25,58 +25,44 @@ const infrastructureSkills = [
 ]
 
 export const SkillsSection = () => {
-    return <section id="skills" className="py-20 bg-background">
-        <div className="container">
-            <h2 className="text-5xl font-bold text-center mt-10 mb-10 text-primary">
-                <span className="text-foreground">My </span>Skills
-            </h2>
-            
-            <div className="p-6 bg-card rounded-lg shadow-md">
-                <h2 className="text-2xl text-glow font-semibold mb-6 text-center">
-                    Technical Expertise
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {/* Web Development */}
+    return (
+        <section id="skills" className="py-4">
+            <div className="space-y-4">
+                <div className="flex items-center justify-between border-b border-border pb-3">
                     <div>
-                        <h3 className="text-lg font-semibold mb-4 text-primary">
-                            <span className="text-glow text-foreground">Web</span> Development
-                        </h3>
+                        <p className="text-xs os-muted">SKILL INVENTORY</p>
+                        <h2 className="text-xl font-semibold os-text">Core Systems</h2>
+                    </div>
+                    <p className="text-xs os-muted">LAST UPDATED: 2026</p>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                    <div className="border border-border p-4">
+                        <p className="text-xs os-muted">WEB DEV</p>
                         <SkillBar skills={webDevSkills}/>
                     </div>
-
-                    {/* Data Science & AI */}
-                    <div>
-                        <h3 className="text-lg font-semibold mb-4 text-primary">
-                            <span className="text-glow text-foreground">AI &</span> Data Science
-                        </h3>
+                    <div className="border border-border p-4">
+                        <p className="text-xs os-muted">AI & DATA</p>
                         <SkillBar skills={dataAndAISkills}/>
                     </div>
-                    
-                    {/* Tools & Infrastructure */}
-                    <div>
-                        <h3 className="text-lg font-semibold mb-4 text-primary">
-                            <span className="text-glow text-foreground">Cloud &</span> Infrastructure
-                        </h3>
+                    <div className="border border-border p-4">
+                        <p className="text-xs os-muted">CLOUD & TOOLS</p>
                         <SkillBar skills={infrastructureSkills}/>
                     </div>
                 </div>
-            </div>
-            
-            {/* Design & Leadership (Replacing "Other Skills") */}
-            <div className="p-6 bg-card rounded-lg shadow-md mt-5">
-                <h2 className="text-2xl text-glow font-semibold mb-6 text-center">
-                    Design & Product Management
-                </h2>
-                <div className="flex flex-wrap justify-center gap-4">
-                    {/* Use these as simple badges/tags instead of bars */}
-                    {["Figma", "Adobe Creative Cloud", "UI/UX Design", "PRD Writing", "Agile/Kanban", "User Research"].map((skill) => (
-                        <span key={skill} className="px-4 py-2 bg-background border border-primary/20 rounded-full text-sm font-medium hover:bg-primary/10 transition-colors">
-                            {skill}
-                        </span>
-                    ))}
+
+                <div className="border border-border p-4">
+                    <p className="text-xs os-muted">DESIGN & PRODUCT</p>
+                    <div className="mt-3 flex flex-wrap gap-2 text-sm os-text">
+                        {["Figma", "Adobe CC", "UI/UX Design", "PRD Writing", "Agile/Kanban", "User Research"].map((skill) => (
+                            <span key={skill} className="border border-border px-3 py-1">
+                                {skill}
+                            </span>
+                        ))}
+                    </div>
                 </div>
-            </div> 
-        </div>
-    </section>
+            </div>
+        </section>
+    );
 }
 
