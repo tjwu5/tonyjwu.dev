@@ -8,10 +8,10 @@ import { OSWindow } from "../components/OSWindow";
 const ResumePanel = () => {
     return (
         <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-border pb-3">
+            <div className="flex flex-col gap-2 border-b border-border pb-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <p className="text-xs os-muted">DOCUMENT VIEWER</p>
-                    <h2 className="text-xl font-semibold os-text">Resume</h2>
+                    <h2 className="text-lg font-semibold os-text sm:text-xl">Resume</h2>
                 </div>
                 <p className="text-xs os-muted">VERSION: 2026.01</p>
             </div>
@@ -42,12 +42,12 @@ const ResumePanel = () => {
 
                 <div className="border border-border p-4">
                     <p className="text-xs os-muted">DOWNLOAD</p>
-                    <div className="mt-2 flex items-center gap-3">
+                    <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
                         <a
                             href="/Resume_TonyWu.pdf"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="os-button border px-3 py-2 text-xs font-semibold"
+                            className="os-button border px-3 py-2 text-xs font-semibold text-center w-full sm:w-auto"
                         >
                             Open Resume PDF
                         </a>
@@ -67,10 +67,18 @@ export const Home = () => {
     const [windowZIndex, setWindowZIndex] = useState({});
     const [zCounter, setZCounter] = useState(100);
     const [windowModes, setWindowModes] = useState({});
+    const [isMobile, setIsMobile] = useState(false);
     const [zoomedWindows, setZoomedWindows] = useState({});
     const [closingWindows, setClosingWindows] = useState({});
     const [windowAnimations, setWindowAnimations] = useState({});
     const [titleFlash, setTitleFlash] = useState({});
+    const [musicEnabled, setMusicEnabled] = useState(false);
+    const [musicVolume, setMusicVolume] = useState(0.1);
+    const [isMusicExpanded, setIsMusicExpanded] = useState(false);
+    const audioRef = useRef(null);
+    const fadeIntervalRef = useRef(null);
+    const lastTimeSaveRef = useRef(0);
+    const pendingStartTimeRef = useRef(null);
     const closeTimersRef = useRef({});
     const animationTimersRef = useRef({});
     const openWindowCountRef = useRef(0);
@@ -116,14 +124,16 @@ export const Home = () => {
         const viewportHeight = window.innerHeight;
         const width = Math.min(viewportWidth * 0.9, Math.max(480, viewportWidth * 0.7));
         const height = Math.min(viewportHeight * 0.8, Math.max(360, viewportHeight * 0.7));
+        const edgePadding = 16;
+        const topBarHeight = 48;
         const offsetX = index * 48;
         const offsetY = index * 36;
         const baseX = Math.round((viewportWidth - width) / 2) + offsetX;
         const baseY = Math.round((viewportHeight - height) / 2) + offsetY;
-        const minX = 16;
-        const minY = 16;
-        const maxX = Math.max(minX, viewportWidth - width - 16);
-        const maxY = Math.max(minY, viewportHeight - height - 16);
+        const minX = edgePadding;
+        const minY = edgePadding + topBarHeight;
+        const maxX = Math.max(minX, viewportWidth - width - edgePadding);
+        const maxY = Math.max(minY, viewportHeight - height - edgePadding);
         const rangeX = maxX - minX;
         const rangeY = maxY - minY;
         const wrap = (value, min, range) => (
@@ -140,10 +150,12 @@ export const Home = () => {
     const clampPosition = (pos) => {
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
-        const minX = 16;
-        const minY = 16;
-        const maxX = Math.max(minX, viewportWidth - (pos.width ?? 720) - 16);
-        const maxY = Math.max(minY, viewportHeight - (pos.height ?? 520) - 16);
+        const edgePadding = 16;
+        const topBarHeight = 48;
+        const minX = edgePadding;
+        const minY = edgePadding + topBarHeight;
+        const maxX = Math.max(minX, viewportWidth - (pos.width ?? 720) - edgePadding);
+        const maxY = Math.max(minY, viewportHeight - (pos.height ?? 520) - edgePadding);
         return {
             ...pos,
             x: Math.min(Math.max(pos.x, minX), maxX),
@@ -337,6 +349,20 @@ export const Home = () => {
             animationTimersRef.current[id] = null;
         }, 160);
     };
+
+    const enforceMobileSingleActive = (activeId) => {
+        if (!isMobile) return;
+        setWindowModes((prev) => {
+            const next = { ...prev, [activeId]: "active" };
+            Object.keys(prev).forEach((id) => {
+                if (id !== activeId && prev[id] === "active") {
+                    next[id] = "background";
+                }
+            });
+            return next;
+        });
+    };
+
     const openWindow = (id, sourceRect) => {
         if (closeTimersRef.current[id]) {
             window.clearTimeout(closeTimersRef.current[id]);
@@ -357,6 +383,7 @@ export const Home = () => {
         setWindowModes((prev) => ({ ...prev, [id]: "active" }));
         setWindowOrder((prev) => (prev.includes(id) ? prev : [...prev, id]));
         bringToFront(id);
+        enforceMobileSingleActive(id);
         requestAnimationFrame(() => {
             runOpenAnimation(id, sourceRect ?? getLauncherRect(id));
         });
@@ -382,6 +409,7 @@ export const Home = () => {
     const restoreWindow = (id, sourceRect) => {
         setWindowModes((prev) => ({ ...prev, [id]: "active" }));
         bringToFront(id);
+        enforceMobileSingleActive(id);
         requestAnimationFrame(() => {
             runOpenAnimation(id, sourceRect ?? getLauncherRect(id));
         });
@@ -406,6 +434,7 @@ export const Home = () => {
             return;
         }
         bringToFront(id);
+        enforceMobileSingleActive(id);
         runFocusAnimation(id);
         setTitleFlash((prev) => ({ ...prev, [id]: true }));
         window.setTimeout(() => {
@@ -428,6 +457,171 @@ export const Home = () => {
     }, []);
 
     useEffect(() => {
+        const savedEnabled = localStorage.getItem("tjwu.os.music.enabled");
+        const savedVolume = localStorage.getItem("tjwu.os.music.volume");
+        const savedTime = localStorage.getItem("tjwu.os.music.time");
+        if (savedEnabled === "true") {
+            setMusicEnabled(true);
+        }
+        if (savedVolume) {
+            const parsed = Number.parseFloat(savedVolume);
+            if (!Number.isNaN(parsed)) {
+                const clamped = Math.min(Math.max(parsed, 0), 0.25);
+                setMusicVolume(clamped);
+            }
+        }
+        if (savedTime) {
+            const parsed = Number.parseFloat(savedTime);
+            if (!Number.isNaN(parsed) && parsed >= 0) {
+                const audioEl = audioRef.current;
+                if (audioEl && audioEl.readyState >= 1) {
+                    audioEl.currentTime = parsed;
+                } else {
+                    pendingStartTimeRef.current = parsed;
+                }
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem("tjwu.os.music.enabled", musicEnabled ? "true" : "false");
+        localStorage.setItem("tjwu.os.music.volume", String(musicVolume));
+    }, [musicEnabled, musicVolume]);
+
+    const savePlaybackTime = () => {
+        const audioEl = audioRef.current;
+        if (!audioEl) return;
+        localStorage.setItem("tjwu.os.music.time", String(audioEl.currentTime || 0));
+    };
+
+    const fadeInVolume = (audioEl, targetVolume) => {
+        if (fadeIntervalRef.current) {
+            window.clearInterval(fadeIntervalRef.current);
+            fadeIntervalRef.current = null;
+        }
+        const durationMs = 1200;
+        const stepMs = 50;
+        const steps = Math.max(1, Math.round(durationMs / stepMs));
+        const startVolume = 0;
+        let currentStep = 0;
+        audioEl.volume = startVolume;
+        fadeIntervalRef.current = window.setInterval(() => {
+            currentStep += 1;
+            const next = Math.min(targetVolume, (targetVolume * currentStep) / steps);
+            audioEl.volume = next;
+            if (currentStep >= steps) {
+                window.clearInterval(fadeIntervalRef.current);
+                fadeIntervalRef.current = null;
+            }
+        }, stepMs);
+    };
+
+    const startPlayback = async () => {
+        const audioEl = audioRef.current;
+        if (!audioEl) return;
+        const savedTime = localStorage.getItem("tjwu.os.music.time");
+        const parsed = savedTime ? Number.parseFloat(savedTime) : NaN;
+        const hasSavedTime = !Number.isNaN(parsed) && parsed >= 0;
+        const computeStartTime = () => {
+            if (hasSavedTime) {
+                return parsed;
+            }
+            if (Number.isFinite(audioEl.duration) && audioEl.duration < 60) {
+                return 0;
+            }
+            return 60;
+        };
+        if (Number.isFinite(audioEl.duration)) {
+            audioEl.currentTime = computeStartTime();
+        } else {
+            pendingStartTimeRef.current = computeStartTime();
+        }
+        fadeInVolume(audioEl, musicVolume);
+        try {
+            await audioEl.play();
+            setMusicEnabled(true);
+        } catch (error) {
+            setMusicEnabled(false);
+        }
+    };
+
+    const handleMusicToggle = async () => {
+        const audioEl = audioRef.current;
+        if (!audioEl) return;
+        if (musicEnabled && !audioEl.paused) {
+            audioEl.pause();
+            setMusicEnabled(false);
+            savePlaybackTime();
+            return;
+        }
+        await startPlayback();
+    };
+
+    const handleVolumeChange = (event) => {
+        const nextVolume = Number.parseFloat(event.target.value);
+        const clamped = Math.min(Math.max(nextVolume, 0), 0.25);
+        setMusicVolume(clamped);
+        if (audioRef.current) {
+            audioRef.current.volume = clamped;
+        }
+    };
+
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.volume = musicVolume;
+        }
+    }, [musicVolume]);
+
+    useEffect(() => {
+        const audioEl = audioRef.current;
+        if (!audioEl) return undefined;
+        const handleTimeUpdate = () => {
+            const now = Date.now();
+            if (now - lastTimeSaveRef.current < 1000) return;
+            lastTimeSaveRef.current = now;
+            savePlaybackTime();
+        };
+        const handlePause = () => savePlaybackTime();
+        const handleBeforeUnload = () => savePlaybackTime();
+        audioEl.addEventListener("timeupdate", handleTimeUpdate);
+        audioEl.addEventListener("pause", handlePause);
+        window.addEventListener("beforeunload", handleBeforeUnload);
+        return () => {
+            audioEl.removeEventListener("timeupdate", handleTimeUpdate);
+            audioEl.removeEventListener("pause", handlePause);
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+    }, []);
+
+    const handleAudioLoadedMetadata = () => {
+        const audioEl = audioRef.current;
+        if (!audioEl) return;
+        const pending = pendingStartTimeRef.current;
+        if (pending === null) return;
+        const target = Number.isFinite(audioEl.duration) && audioEl.duration < pending ? 0 : pending;
+        audioEl.currentTime = target;
+        pendingStartTimeRef.current = null;
+    };
+
+    useEffect(() => {
+        const media = window.matchMedia("(max-width: 768px), (pointer: coarse)");
+        const update = () => setIsMobile(media.matches);
+        update();
+        if (media.addEventListener) {
+            media.addEventListener("change", update);
+            return () => media.removeEventListener("change", update);
+        }
+        media.addListener(update);
+        return () => media.removeListener(update);
+    }, []);
+
+    useEffect(() => {
+        if (isMobile) {
+            setIsMusicExpanded(false);
+        }
+    }, [isMobile]);
+
+    useEffect(() => {
         const handleKeyDown = (event) => {
             const target = event.target;
             if (target && (["INPUT", "TEXTAREA"].includes(target.tagName) || target.isContentEditable)) {
@@ -444,17 +638,67 @@ export const Home = () => {
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, []);
 
+    useEffect(() => {
+        if (!isMobile) return;
+        const activeIds = Object.keys(windowModes)
+            .filter((id) => windowModes[id] === "active" && !closingWindows[id]);
+        if (activeIds.length <= 1) return;
+        const topId = activeIds.reduce((topId, id) => {
+            if (!topId) return id;
+            const topZ = windowZIndex[topId] ?? 0;
+            const currentZ = windowZIndex[id] ?? 0;
+            return currentZ >= topZ ? id : topId;
+        }, "");
+        if (!topId) return;
+        setWindowModes((prev) => {
+            let changed = false;
+            const next = { ...prev };
+            Object.keys(prev).forEach((id) => {
+                if (id !== topId && prev[id] === "active") {
+                    next[id] = "background";
+                    changed = true;
+                }
+            });
+            return changed ? next : prev;
+        });
+    }, [isMobile, windowModes, closingWindows, windowZIndex]);
+
     const hasVisibleWindows = Object.keys(windowModes).some(
         (id) => windowModes[id] === "active" && !closingWindows[id]
     );
 
+    const topmostActiveId = Object.keys(windowModes)
+        .filter((id) => windowModes[id] === "active" && !closingWindows[id])
+        .reduce((topId, id) => {
+            if (!topId) return id;
+            const topZ = windowZIndex[topId] ?? 0;
+            const currentZ = windowZIndex[id] ?? 0;
+            return currentZ >= topZ ? id : topId;
+        }, "");
+
     return (
-        <div className="os-screen fixed inset-0 text-foreground overflow-hidden">
-            <div className="os-topbar flex h-12 items-center justify-between border-b px-4">
+        <div className="os-screen fixed inset-0 text-foreground overflow-hidden flex flex-col min-h-screen">
+            <audio ref={audioRef} src="/audio/bg.mp3" loop preload="auto" onLoadedMetadata={handleAudioLoadedMetadata} />
+            <div className="os-bg-layer" aria-hidden="true">
+                <div className="os-bg-glow" />
+                <div className="os-bg-pixels">
+                    <span style={{ top: "18%", left: "12%", animationDelay: "0s" }} />
+                    <span style={{ top: "32%", left: "68%", animationDelay: "2s" }} />
+                    <span style={{ top: "12%", left: "78%", animationDelay: "4s" }} />
+                    <span style={{ top: "64%", left: "22%", animationDelay: "1s" }} />
+                    <span style={{ top: "74%", left: "58%", animationDelay: "3s" }} />
+                    <span style={{ top: "52%", left: "86%", animationDelay: "5s" }} />
+                    <span style={{ top: "82%", left: "34%", animationDelay: "6s" }} />
+                    <span style={{ top: "26%", left: "42%", animationDelay: "7s" }} />
+                    <span style={{ top: "46%", left: "10%", animationDelay: "8s" }} />
+                    <span style={{ top: "88%", left: "80%", animationDelay: "9s" }} />
+                </div>
+            </div>
+            <div className="os-topbar relative z-10 flex h-12 items-center justify-between border-b px-4">
                 <div className="font-semibold text-sm os-text">
                     tjwu.OS v1.0 <span className="os-accent ml-2">SYSTEM READY</span>
                 </div>
-                <div className="flex gap-2">
+                <div className="os-topbar-apps flex gap-2">
                     {["about", "projects", "skills", "resume", "contact"].map((id) => {
                         const mode = windowModes[id] ?? "inactive";
                         const stateClass = mode === "active"
@@ -481,20 +725,22 @@ export const Home = () => {
                 </div>
             </div>
 
-            <div className="relative h-[calc(100%-3rem)] w-full">
+            <div className="relative z-10 flex-1 min-h-0 w-full">
                 <div className="pointer-events-none absolute top-4 right-4 text-xs os-muted">
                     TJWU.OS Workspace
                 </div>
-                <div
-                    className={`os-boot fixed left-1/2 top-1/2 w-[90vw] max-w-xl -translate-x-1/2 -translate-y-1/2 border px-6 py-5 text-center ${hasVisibleWindows ? "os-boot--dimmed pointer-events-none z-0" : "os-boot--active pointer-events-auto z-20"}`}
-                >
-                    <div className="text-lg font-semibold os-text">Welcome to TJWU.OS</div>
-                    <div className="mt-2 text-sm os-muted">
-                        Click an app above or press A / P / S / R / C
+                <div className="absolute inset-0 flex items-center justify-center p-4">
+                    <div
+                        className={`os-boot w-[90vw] max-w-xl border px-6 py-5 text-center ${hasVisibleWindows ? "os-boot--dimmed pointer-events-none z-0" : "os-boot--active pointer-events-auto z-20"}`}
+                    >
+                        <div className="text-lg font-semibold os-text">Welcome to TJWU.OS</div>
+                        <div className="mt-2 text-sm os-muted">
+                            Click an app above or press A / P / S / R / C
+                        </div>
                     </div>
                 </div>
                 {windowOrder.map((id) => (
-                    windowModes[id] === "active" ? (
+                    windowModes[id] === "active" && (!isMobile || id === topmostActiveId) ? (
                         <OSWindow
                             key={id}
                             title={windowConfig[id].title}
@@ -518,6 +764,47 @@ export const Home = () => {
                         </OSWindow>
                     ) : null
                 ))}
+                <div
+                    className={`fixed z-[300] rounded-md border border-border bg-black/50 px-3 py-2 text-xs os-text shadow-[0_0_12px_rgba(74,222,128,0.18)] backdrop-blur-md os-music-widget ${musicEnabled ? "os-music-widget--on" : "os-music-widget--off"}`}
+                    style={{
+                        left: "max(12px, env(safe-area-inset-left))",
+                        bottom: "max(12px, env(safe-area-inset-bottom))",
+                    }}
+                >
+                    <div className="flex items-center gap-2">
+                        <button
+                            type="button"
+                            onClick={handleMusicToggle}
+                            className="os-button border px-3 py-2 text-xs font-medium min-h-[44px]"
+                            aria-pressed={musicEnabled}
+                        >
+                            Music {musicEnabled ? "On" : "Off"}
+                        </button>
+                        {(!isMobile || isMusicExpanded) && (
+                            <input
+                                type="range"
+                                min="0"
+                                max="0.25"
+                                step="0.01"
+                                value={musicVolume}
+                                onChange={handleVolumeChange}
+                                aria-label="Background music volume"
+                                className="h-1 w-20 accent-emerald-300"
+                            />
+                        )}
+                        {isMobile && (
+                            <button
+                                type="button"
+                                onClick={() => setIsMusicExpanded((prev) => !prev)}
+                                className="os-button border px-2 py-2 text-xs font-medium min-h-[44px]"
+                                aria-label={isMusicExpanded ? "Collapse music controls" : "Expand music controls"}
+                                aria-expanded={isMusicExpanded}
+                            >
+                                {isMusicExpanded ? "▴" : "▾"}
+                            </button>
+                        )}
+                    </div>
+                </div>
                 <div className="pointer-events-none absolute bottom-4 right-4 text-xs os-muted">
                     PORTFOLIO INTERFACE
                 </div>
