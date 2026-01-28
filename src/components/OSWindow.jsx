@@ -38,7 +38,7 @@ export const OSWindow = ({
       aria-label={title}
     >
       <div
-        className={`flex items-center justify-between border-b px-3 py-2 select-none os-titlebar-glow ${titleFlash ? "os-titlebar-flash" : ""}`}
+        className={`os-titlebar flex items-center justify-between border-b px-3 py-2 select-none os-titlebar-glow ${titleFlash ? "os-titlebar-flash" : ""}`}
       >
         <div
           className="flex items-center gap-2"

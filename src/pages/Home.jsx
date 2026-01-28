@@ -789,7 +789,7 @@ export const Home = () => {
                                 value={musicVolume}
                                 onChange={handleVolumeChange}
                                 aria-label="Background music volume"
-                                className="h-1 w-20 accent-emerald-300"
+                                className="os-music-slider h-1 w-20 accent-emerald-300"
                             />
                         )}
                         {isMobile && (
