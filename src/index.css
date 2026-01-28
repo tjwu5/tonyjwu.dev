@@ -303,10 +303,12 @@
   border-color: var(--os-border);
   color: var(--os-text);
   background-color: rgba(6, 9, 13, 0.6);
+  cursor: pointer;
 }
 
 .os-button:hover {
   background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--os-accent) 14%, transparent);
 }
 
 .os-app-btn {
@@ -314,6 +316,13 @@
   align-items: center;
   gap: 6px;
   min-height: 44px;
+  cursor: pointer;
+}
+
+.os-app-btn:hover {
+  box-shadow:
+    inset 0 0 6px color-mix(in srgb, var(--os-accent) 12%, transparent),
+    0 0 8px color-mix(in srgb, var(--os-accent) 14%, transparent);
 }
 
 .os-topbar-apps {
@@ -400,6 +409,10 @@
     0 0 8px color-mix(in srgb, var(--os-accent) 12%, transparent);
 }
 
+.os-titlebar {
+  cursor: pointer;
+}
+
 .os-titlebar-glow--active {
   border-color: color-mix(in srgb, var(--os-accent) 40%, var(--os-border));
   box-shadow:
@@ -453,6 +466,40 @@
     0 0 0 1px color-mix(in srgb, var(--os-accent) 22%, transparent);
 }
 
+.os-traffic {
+  cursor: pointer;
+}
+
+.os-traffic:hover {
+  filter: brightness(1.12);
+}
+
+.os-music-slider {
+  cursor: pointer;
+}
+
+.os-music-slider::-webkit-slider-thumb {
+  cursor: pointer;
+}
+
+.os-music-slider::-moz-range-thumb {
+  cursor: pointer;
+}
+
+.os-music-slider:hover {
+  filter: brightness(1.1);
+}
+
+.os-music-slider::-webkit-slider-thumb:hover {
+  filter: brightness(1.15);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--os-accent) 18%, transparent);
+}
+
+.os-music-slider::-moz-range-thumb:hover {
+  filter: brightness(1.15);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--os-accent) 18%, transparent);
+}
+
 @keyframes music-widget-breathe {
   0%,
   100% {
@@ -470,6 +517,10 @@
 }
 
 @media (max-width: 768px), (pointer: coarse) {
+  .os-titlebar {
+    cursor: default;
+  }
+
   .os-music-widget {
     border-radius: 999px;
     padding: 6px 10px;
