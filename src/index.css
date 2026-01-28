@@ -234,6 +234,77 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+.os-app-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.os-app-btn--inactive {
+  opacity: 0.7;
+}
+
+.os-app-btn--background {
+  box-shadow: 0 0 8px color-mix(in srgb, var(--os-accent) 18%, transparent);
+}
+
+.os-app-btn--active {
+  border-color: color-mix(in srgb, var(--os-accent) 55%, var(--os-border));
+  box-shadow:
+    inset 0 0 8px color-mix(in srgb, var(--os-accent) 20%, transparent),
+    0 0 12px color-mix(in srgb, var(--os-accent) 22%, transparent);
+}
+
+.os-app-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background-color: var(--os-accent);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--os-accent) 40%, transparent);
+}
+
+.os-panel-card {
+  scroll-margin-top: 72px;
+  animation: panel-enter 180ms ease-out;
+}
+
+.os-panel--expanded {
+  grid-column: span 2 / span 2;
+}
+
+@media (max-width: 767px) {
+  .os-panel--expanded {
+    grid-column: auto;
+  }
+}
+
+.os-panel--highlight {
+  animation: panel-highlight 420ms ease-out;
+}
+
+@keyframes panel-highlight {
+  0% {
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  }
+  50% {
+    box-shadow: 0 0 16px color-mix(in srgb, var(--os-accent) 25%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+@keyframes panel-enter {
+  0% {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .os-titlebar-glow {
   border-color: color-mix(in srgb, var(--os-accent) 25%, var(--os-border));
   background: linear-gradient(
@@ -260,14 +331,20 @@
     0 0 6px color-mix(in srgb, var(--os-accent) 8%, transparent);
 }
 
-.os-resize-handle {
-  position: absolute;
-  right: 6px;
-  bottom: 6px;
-  width: 14px;
-  height: 14px;
-  border-right: 2px solid color-mix(in srgb, var(--os-accent) 45%, transparent);
-  border-bottom: 2px solid color-mix(in srgb, var(--os-accent) 45%, transparent);
-  opacity: 0.7;
-  cursor: nwse-resize;
+.os-titlebar-flash {
+  animation: titlebar-flash 300ms ease-out;
+}
+
+@keyframes titlebar-flash {
+  0% {
+    box-shadow: inset 0 0 8px color-mix(in srgb, var(--os-accent) 12%, transparent);
+  }
+  50% {
+    box-shadow:
+      inset 0 0 14px color-mix(in srgb, var(--os-accent) 26%, transparent),
+      0 0 10px color-mix(in srgb, var(--os-accent) 20%, transparent);
+  }
+  100% {
+    box-shadow: inset 0 0 8px color-mix(in srgb, var(--os-accent) 12%, transparent);
+  }
 }
