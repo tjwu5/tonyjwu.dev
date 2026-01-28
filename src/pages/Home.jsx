@@ -79,6 +79,10 @@ export const Home = () => {
     const fadeIntervalRef = useRef(null);
     const lastTimeSaveRef = useRef(0);
     const pendingStartTimeRef = useRef(null);
+    const gridCanvasRef = useRef(null);
+    const gridPulseRef = useRef([]);
+    const gridAnimationRef = useRef(null);
+    const gridSpawnTimerRef = useRef(null);
     const closeTimersRef = useRef({});
     const animationTimersRef = useRef({});
     const openWindowCountRef = useRef(0);
@@ -616,6 +620,401 @@ export const Home = () => {
     }, []);
 
     useEffect(() => {
+        const canvas = gridCanvasRef.current;
+        if (!canvas) return undefined;
+        if (prefersReducedMotion()) {
+            canvas.style.display = "none";
+            return undefined;
+        }
+        canvas.style.display = "block";
+        const context = canvas.getContext("2d");
+        if (!context) return undefined;
+        const gridSize = 24;
+        const zonesRef = { current: [] };
+
+        const getConfig = () => ({
+            zoneCount: isMobile ? 1 : 2,
+            maxHighlights: isMobile ? 16 : 28,
+            spawnInterval: isMobile ? [1400, 2800] : [900, 1600],
+            shapesPerTick: isMobile ? [1, 2] : [1, 3],
+            maxAlpha: isMobile ? 0.32 : 0.44,
+            glowBlur: isMobile ? 4 : 8,
+            lineWidth: isMobile ? 1.3 : 1.6,
+            zoneRadius: isMobile ? [160, 260] : [220, 380],
+            coreBias: 0.8,
+            relocateEvery: [12000, 20000],
+            driftSpeed: isMobile ? 5 : 12,
+        });
+
+        const resizeCanvas = () => {
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            const width = rect.width;
+            const height = rect.height;
+            if (!width || !height) return;
+            canvas.width = Math.floor(width * dpr);
+            canvas.height = Math.floor(height * dpr);
+            canvas.style.width = `${width}px`;
+            canvas.style.height = `${height}px`;
+            context.setTransform(dpr, 0, 0, dpr, 0, 0);
+        };
+
+        const getCanvasBounds = () => canvas.getBoundingClientRect();
+
+        const pickPoint = () => {
+            const rect = getCanvasBounds();
+            const width = rect.width;
+            const height = rect.height;
+            const topPadding = 12;
+            const bottomPadding = 24;
+            const sidePadding = 24;
+            return {
+                x: Math.max(sidePadding, Math.random() * (width - sidePadding * 2)),
+                y: Math.max(topPadding, Math.random() * (height - topPadding - bottomPadding)),
+            };
+        };
+
+        const randomRange = (min, max) => min + Math.random() * (max - min);
+
+        const gaussianRadius = (spreadMin, spreadMax) => {
+            const u = Math.max(Math.random(), 1e-6);
+            const v = Math.max(Math.random(), 1e-6);
+            const z = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+            const spread = randomRange(spreadMin, spreadMax);
+            return Math.abs(z) * (spread * 0.6);
+        };
+
+        const snapToGrid = (value) => Math.round(value / gridSize) * gridSize;
+
+        const initZones = () => {
+            const { zoneCount, zoneRadius, relocateEvery } = getConfig();
+            zonesRef.current = Array.from({ length: zoneCount }).map(() => {
+                const point = pickPoint();
+                return {
+                    cx: point.x,
+                    cy: point.y,
+                    radius: randomRange(zoneRadius[0], zoneRadius[1]),
+                    target: pickPoint(),
+                    nextRelocate: performance.now() + randomRange(relocateEvery[0], relocateEvery[1]),
+                };
+            });
+        };
+
+        const driftZones = (deltaMs) => {
+            const { driftSpeed, zoneRadius, relocateEvery } = getConfig();
+            const rect = getCanvasBounds();
+            const width = rect.width;
+            const height = rect.height;
+            zonesRef.current.forEach((zone) => {
+                const now = performance.now();
+                if (now > zone.nextRelocate) {
+                    zone.target = pickPoint();
+                    zone.radius = randomRange(zoneRadius[0], zoneRadius[1]);
+                    zone.nextRelocate = now + randomRange(relocateEvery[0], relocateEvery[1]);
+                }
+                const dx = zone.target.x - zone.cx;
+                const dy = zone.target.y - zone.cy;
+                const distance = Math.hypot(dx, dy) || 1;
+                const step = (driftSpeed * deltaMs) / 1000;
+                zone.cx += (dx / distance) * step;
+                zone.cy += (dy / distance) * step;
+            zone.cx = Math.min(Math.max(zone.cx, 60), width - 60);
+            zone.cy = Math.min(Math.max(zone.cy, 40), height - 40);
+            });
+        };
+
+        const pickZonePoint = (zone) => {
+            const { coreBias } = getConfig();
+            const angle = Math.random() * Math.PI * 2;
+            const radius = Math.random() < coreBias
+                ? gaussianRadius(zone.radius * 0.2, zone.radius * 0.55)
+                : gaussianRadius(zone.radius * 0.6, zone.radius * 0.9);
+            return {
+                x: zone.cx + Math.cos(angle) * radius,
+                y: zone.cy + Math.sin(angle) * radius,
+            };
+        };
+
+        const spawnZoneShapes = (zone, now) => {
+            const { maxHighlights, shapesPerTick } = getConfig();
+            if (gridPulseRef.current.length >= maxHighlights) return;
+            const rect = getCanvasBounds();
+            const width = rect.width;
+            const height = rect.height;
+            const count = Math.floor(randomRange(shapesPerTick[0], shapesPerTick[1]));
+            const newHighlights = [];
+            for (let i = 0; i < count; i += 1) {
+                if (gridPulseRef.current.length >= maxHighlights) break;
+                const point = pickZonePoint(zone);
+                const x = snapToGrid(point.x);
+                const y = snapToGrid(point.y);
+                if (x < 0 || y < 0 || x > width || y > height) continue;
+                const lifeDuration = randomRange(7000, 12000);
+                const waveCount = 2 + Math.floor(Math.random() * 2);
+                const phaseOffset = Math.random() * Math.PI * 2;
+                const decayFactor = randomRange(0.72, 0.85);
+                const shapeTypeRoll = Math.random();
+                if (shapeTypeRoll < 0.42) {
+                    const segmentMin = isMobile ? 1 : 1;
+                    const segmentMax = isMobile ? 3 : 4;
+                    const segmentLimit = isMobile ? 10 : 14;
+                    const maxSegments = isMobile ? 4 : 5;
+                    const steps = 2 + Math.floor(Math.random() * maxSegments);
+                    const points = [{ x, y }];
+                    let dir = Math.floor(Math.random() * 4);
+                    let consecutive = 0;
+                    let totalCells = 0;
+                    for (let step = 0; step < steps; step += 1) {
+                        if (consecutive >= 2 || Math.random() < 0.65) {
+                            dir = (dir + (Math.random() < 0.5 ? 1 : 3)) % 4;
+                            consecutive = 0;
+                        }
+                        const segmentLength = segmentMin + Math.floor(Math.random() * (segmentMax - segmentMin + 1));
+                        if (totalCells + segmentLength > segmentLimit) break;
+                        totalCells += segmentLength;
+                        consecutive += 1;
+                        const last = points[points.length - 1];
+                        const next = { x: last.x, y: last.y };
+                        if (dir === 0) next.x += segmentLength * gridSize;
+                        if (dir === 1) next.y += segmentLength * gridSize;
+                        if (dir === 2) next.x -= segmentLength * gridSize;
+                        if (dir === 3) next.y -= segmentLength * gridSize;
+                        points.push(next);
+                    }
+                    newHighlights.push({
+                        type: "trace",
+                        points,
+                        start: now,
+                        duration: lifeDuration,
+                        waveCount,
+                        phaseOffset,
+                        decayFactor,
+                    });
+                } else if (shapeTypeRoll < 0.72) {
+                    const legs = [];
+                    const legCount = 3 + Math.floor(Math.random() * 3);
+                    const directions = [0, 1, 2, 3].sort(() => Math.random() - 0.5).slice(0, legCount);
+                    directions.forEach((dir) => {
+                        const length = 1 + Math.floor(Math.random() * 3);
+                        legs.push({ dir, length });
+                    });
+                    newHighlights.push({
+                        type: "nodeLegs",
+                        x,
+                        y,
+                        radius: randomRange(2, 4),
+                        legs,
+                        start: now,
+                        duration: lifeDuration,
+                        waveCount,
+                        phaseOffset,
+                        decayFactor,
+                    });
+                } else if (shapeTypeRoll < 0.86) {
+                    const widthCells = Math.random() < 0.5 ? 3 : 4;
+                    const heightCells = Math.random() < 0.5 ? 3 : 4;
+                    const segments = [];
+                    for (let cx = 0; cx < widthCells; cx += 1) {
+                        for (let cy = 0; cy < heightCells; cy += 1) {
+                            if (Math.random() < 0.62) {
+                                segments.push({
+                                    x1: x + cx * gridSize,
+                                    y1: y + cy * gridSize,
+                                    x2: x + (cx + 1) * gridSize,
+                                    y2: y + cy * gridSize,
+                                });
+                            }
+                            if (Math.random() < 0.62) {
+                                segments.push({
+                                    x1: x + cx * gridSize,
+                                    y1: y + cy * gridSize,
+                                    x2: x + cx * gridSize,
+                                    y2: y + (cy + 1) * gridSize,
+                                });
+                            }
+                        }
+                    }
+                    newHighlights.push({
+                        type: "lattice",
+                        segments,
+                        start: now,
+                        duration: lifeDuration,
+                        waveCount,
+                        phaseOffset,
+                        decayFactor,
+                    });
+                } else {
+                    const isPlus = Math.random() < 0.5;
+                    const length = 3 + Math.floor(Math.random() * 7);
+                    newHighlights.push({
+                        type: "junction",
+                        x,
+                        y,
+                        length,
+                        isPlus,
+                        start: now,
+                        duration: lifeDuration,
+                        waveCount,
+                        phaseOffset,
+                        decayFactor,
+                    });
+                }
+            }
+            newHighlights.forEach((item) => {
+                if (gridPulseRef.current.length < maxHighlights) {
+                    gridPulseRef.current.push(item);
+                }
+            });
+        };
+
+        const computeIntensity = (highlight, now) => {
+            const t = (now - highlight.start) / highlight.duration;
+            if (t >= 1) return 0;
+            const envelope = Math.sin(Math.PI * t);
+            const waveCount = highlight.waveCount ?? 2;
+            const phase = highlight.phaseOffset ?? 0;
+            const decay = highlight.decayFactor ?? 0.75;
+            const wave = 0.5 + 0.5 * Math.sin(Math.PI * 2 * waveCount * t + phase);
+            const decayFactor = Math.pow(decay, t * waveCount);
+            return Math.max(0, envelope * wave * decayFactor);
+        };
+
+        const drawHighlight = (highlight, alpha, now) => {
+            const { glowBlur, lineWidth } = getConfig();
+            context.save();
+            context.globalCompositeOperation = "lighter";
+            context.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+            context.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+            context.lineWidth = lineWidth;
+            context.lineCap = "round";
+            context.lineJoin = "round";
+            context.shadowColor = `rgba(255, 255, 255, ${alpha})`;
+            const t = (now - highlight.start) / highlight.duration;
+            const waveCount = highlight.waveCount ?? 2;
+            const shrink = 1 - Math.min(0.4, (t * waveCount) * 0.06);
+            context.shadowBlur = glowBlur * shrink;
+
+            if (highlight.type === "trace") {
+                context.beginPath();
+                highlight.points.forEach((point, index) => {
+                    if (index === 0) {
+                        context.moveTo(point.x, point.y);
+                    } else {
+                        context.lineTo(point.x, point.y);
+                    }
+                });
+                context.stroke();
+            } else if (highlight.type === "nodeLegs") {
+                context.beginPath();
+                context.arc(highlight.x, highlight.y, highlight.radius, 0, Math.PI * 2);
+                context.fill();
+                highlight.legs.forEach((leg) => {
+                    const length = leg.length * gridSize;
+                    const end = { x: highlight.x, y: highlight.y };
+                    if (leg.dir === 0) end.x += length;
+                    if (leg.dir === 1) end.y += length;
+                    if (leg.dir === 2) end.x -= length;
+                    if (leg.dir === 3) end.y -= length;
+                    context.beginPath();
+                    context.moveTo(highlight.x, highlight.y);
+                    context.lineTo(end.x, end.y);
+                    context.stroke();
+                });
+            } else if (highlight.type === "lattice") {
+                context.beginPath();
+                highlight.segments.forEach((segment) => {
+                    context.moveTo(segment.x1, segment.y1);
+                    context.lineTo(segment.x2, segment.y2);
+                });
+                context.stroke();
+            } else if (highlight.type === "junction") {
+                const len = highlight.length * gridSize;
+                context.beginPath();
+                context.moveTo(highlight.x - len, highlight.y);
+                context.lineTo(highlight.x + len, highlight.y);
+                context.stroke();
+                context.beginPath();
+                context.moveTo(highlight.x, highlight.y);
+                context.lineTo(highlight.x, highlight.y - len);
+                context.stroke();
+                if (highlight.isPlus) {
+                    context.beginPath();
+                    context.moveTo(highlight.x, highlight.y);
+                    context.lineTo(highlight.x, highlight.y + len);
+                    context.stroke();
+                }
+            }
+            context.restore();
+        };
+
+        const render = (now) => {
+            const { maxAlpha } = getConfig();
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            gridPulseRef.current = gridPulseRef.current.filter((highlight) => {
+                const t = (now - highlight.start) / highlight.duration;
+                if (t >= 1) return false;
+                const intensity = computeIntensity(highlight, now);
+                if (intensity > 0) {
+                    drawHighlight(highlight, maxAlpha * intensity, now);
+                }
+                return true;
+            });
+        };
+
+        const scheduleSpawn = () => {
+            const { spawnInterval } = getConfig();
+            const delay = randomRange(spawnInterval[0], spawnInterval[1]);
+            gridSpawnTimerRef.current = window.setTimeout(() => {
+                const now = performance.now();
+                if (zonesRef.current.length === 0) {
+                    scheduleSpawn();
+                    return;
+                }
+                const hotIndex = Math.floor(Math.random() * zonesRef.current.length);
+                zonesRef.current.forEach((zone, index) => {
+                    const isHot = index === hotIndex;
+                    if (isHot || Math.random() < 0.2) {
+                        spawnZoneShapes(zone, now);
+                    }
+                });
+                scheduleSpawn();
+            }, delay);
+        };
+
+        resizeCanvas();
+        gridPulseRef.current = [];
+        if (gridSpawnTimerRef.current) {
+            window.clearTimeout(gridSpawnTimerRef.current);
+        }
+        initZones();
+        scheduleSpawn();
+        let lastTime = performance.now();
+        const animate = (now) => {
+            const delta = now - lastTime;
+            lastTime = now;
+            driftZones(delta);
+            render(now);
+            gridAnimationRef.current = window.requestAnimationFrame(animate);
+        };
+        gridAnimationRef.current = window.requestAnimationFrame(animate);
+        window.addEventListener("resize", resizeCanvas);
+
+        return () => {
+            window.removeEventListener("resize", resizeCanvas);
+            if (gridAnimationRef.current) {
+                window.cancelAnimationFrame(gridAnimationRef.current);
+                gridAnimationRef.current = null;
+            }
+            if (gridSpawnTimerRef.current) {
+                window.clearTimeout(gridSpawnTimerRef.current);
+                gridSpawnTimerRef.current = null;
+            }
+            zonesRef.current = [];
+            gridPulseRef.current = [];
+        };
+    }, [isMobile]);
+
+    useEffect(() => {
         if (isMobile) {
             setIsMusicExpanded(false);
         }
@@ -680,6 +1079,7 @@ export const Home = () => {
         <div className="os-screen fixed inset-0 text-foreground overflow-hidden flex flex-col min-h-screen">
             <audio ref={audioRef} src="/audio/bg.mp3" loop preload="auto" onLoadedMetadata={handleAudioLoadedMetadata} />
             <div className="os-bg-layer" aria-hidden="true">
+                <canvas className="os-grid-canvas" ref={gridCanvasRef} />
                 <div className="os-bg-glow" />
                 <div className="os-bg-pixels">
                     <span style={{ top: "18%", left: "12%", animationDelay: "0s" }} />
