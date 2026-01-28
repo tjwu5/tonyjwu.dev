@@ -61,18 +61,19 @@ const ResumePanel = () => {
 
 
 export const Home = () => {
-    const [openWindows, setOpenWindows] = useState({});
     const [windowOrder, setWindowOrder] = useState([]);
     const [clock, setClock] = useState("");
     const [windowPositions, setWindowPositions] = useState({});
     const [windowZIndex, setWindowZIndex] = useState({});
     const [zCounter, setZCounter] = useState(100);
-    const [minimizedWindows, setMinimizedWindows] = useState({});
+    const [windowModes, setWindowModes] = useState({});
     const [zoomedWindows, setZoomedWindows] = useState({});
     const [closingWindows, setClosingWindows] = useState({});
     const [windowAnimations, setWindowAnimations] = useState({});
+    const [titleFlash, setTitleFlash] = useState({});
     const closeTimersRef = useRef({});
     const animationTimersRef = useRef({});
+    const openWindowCountRef = useRef(0);
 
     const windowConfig = useMemo(() => ({
         about: {
@@ -99,6 +100,9 @@ export const Home = () => {
         },
     }), []);
 
+    const prefersReducedMotion = () =>
+        window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     const bringToFront = (id) => {
         setZCounter((prev) => {
             const next = prev + 1;
@@ -107,14 +111,79 @@ export const Home = () => {
         });
     };
 
-    const prefersReducedMotion = () =>
-        window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const getInitialPosition = (index = 0) => {
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        const width = Math.min(viewportWidth * 0.9, Math.max(480, viewportWidth * 0.7));
+        const height = Math.min(viewportHeight * 0.8, Math.max(360, viewportHeight * 0.7));
+        const offsetX = index * 48;
+        const offsetY = index * 36;
+        const baseX = Math.round((viewportWidth - width) / 2) + offsetX;
+        const baseY = Math.round((viewportHeight - height) / 2) + offsetY;
+        const minX = 16;
+        const minY = 16;
+        const maxX = Math.max(minX, viewportWidth - width - 16);
+        const maxY = Math.max(minY, viewportHeight - height - 16);
+        const rangeX = maxX - minX;
+        const rangeY = maxY - minY;
+        const wrap = (value, min, range) => (
+            range <= 0 ? min : min + (((value - min) % range) + range) % range
+        );
+        return {
+            x: wrap(baseX, minX, rangeX),
+            y: wrap(baseY, minY, rangeY),
+            width,
+            height,
+        };
+    };
+
+    const clampPosition = (pos) => {
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        const minX = 16;
+        const minY = 16;
+        const maxX = Math.max(minX, viewportWidth - (pos.width ?? 720) - 16);
+        const maxY = Math.max(minY, viewportHeight - (pos.height ?? 520) - 16);
+        return {
+            ...pos,
+            x: Math.min(Math.max(pos.x, minX), maxX),
+            y: Math.min(Math.max(pos.y, minY), maxY),
+        };
+    };
+
+    const titlebarOverlap = (a, b) => {
+        const titleHeight = 36;
+        const ax2 = a.x + a.width;
+        const ay2 = a.y + titleHeight;
+        const bx2 = b.x + b.width;
+        const by2 = b.y + titleHeight;
+        const ix1 = Math.max(a.x, b.x);
+        const iy1 = Math.max(a.y, b.y);
+        const ix2 = Math.min(ax2, bx2);
+        const iy2 = Math.min(ay2, by2);
+        if (ix2 <= ix1 || iy2 <= iy1) return 0;
+        const interArea = (ix2 - ix1) * (iy2 - iy1);
+        return interArea / (a.width * titleHeight);
+    };
+
+    const findNonOverlappingPosition = (base, existing) => {
+        let candidate = clampPosition(base);
+        const stepX = 24;
+        const stepY = 20;
+        for (let i = 0; i < 10; i += 1) {
+            const hasHeavyOverlap = existing.some((pos) => titlebarOverlap(candidate, pos) > 0.6);
+            if (!hasHeavyOverlap) return candidate;
+            candidate = clampPosition({
+                ...candidate,
+                x: candidate.x + stepX,
+                y: candidate.y + stepY,
+            });
+        }
+        return candidate;
+    };
 
     const getLauncherRect = (id) =>
         document.querySelector(`[data-app="${id}"]`)?.getBoundingClientRect() ?? null;
-
-    const getDockRect = (id) =>
-        document.querySelector(`[data-dock="${id}"]`)?.getBoundingClientRect() ?? null;
 
     const getWindowRect = (id) =>
         document.querySelector(`[data-window="${id}"]`)?.getBoundingClientRect() ?? null;
@@ -129,18 +198,6 @@ export const Home = () => {
             delete next[id];
             return next;
         });
-    };
-
-    const getTopmostVisibleId = () => {
-        const visibleIds = windowOrder.filter(
-            (id) => openWindows[id] && !minimizedWindows[id] && !closingWindows[id]
-        );
-        if (visibleIds.length === 0) return null;
-        return visibleIds.reduce((topId, id) => {
-            const topZ = windowZIndex[topId] ?? 0;
-            const currentZ = windowZIndex[id] ?? 0;
-            return currentZ >= topZ ? id : topId;
-        }, visibleIds[0]);
     };
 
     const runOpenAnimation = (id, fromRectOverride) => {
@@ -210,35 +267,20 @@ export const Home = () => {
 
     const runMinimizeAnimation = (id) => {
         if (prefersReducedMotion()) {
-            setMinimizedWindows((prev) => ({ ...prev, [id]: true }));
+            setWindowModes((prev) => ({ ...prev, [id]: "background" }));
             return;
         }
-        const windowRect = getWindowRect(id);
-        const dockRect = getDockRect(id);
-        if (!windowRect || !dockRect) {
-            setAnimationStyle(id, {
-                transition: "transform 220ms ease-out, opacity 180ms ease-out, filter 180ms ease-out",
-                transform: "scale(0.9)",
-                opacity: 0,
-                filter: "blur(1px)",
-            });
-        } else {
-            const dx = dockRect.left - windowRect.left;
-            const dy = dockRect.top - windowRect.top;
-            const sx = dockRect.width / windowRect.width;
-            const sy = dockRect.height / windowRect.height;
-            setAnimationStyle(id, {
-                transition: "transform 260ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 200ms ease-out, filter 200ms ease-out",
-                transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`,
-                opacity: 0.1,
-                filter: "blur(1px)",
-            });
-        }
+        setAnimationStyle(id, {
+            transition: "transform 220ms ease-out, opacity 180ms ease-out, filter 180ms ease-out",
+            transform: "scale(0.9)",
+            opacity: 0,
+            filter: "blur(1px)",
+        });
         if (animationTimersRef.current[id]) {
             window.clearTimeout(animationTimersRef.current[id]);
         }
         animationTimersRef.current[id] = window.setTimeout(() => {
-            setMinimizedWindows((prev) => ({ ...prev, [id]: true }));
+            setWindowModes((prev) => ({ ...prev, [id]: "background" }));
             clearAnimation(id);
             animationTimersRef.current[id] = null;
         }, 280);
@@ -279,22 +321,22 @@ export const Home = () => {
             animationTimersRef.current[id] = null;
         }, 260);
     };
-    const getCenteredPosition = (offsetIndex = 0, sizeOverride) => {
-        const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
-        const defaultWidth = Math.min(900, Math.max(320, viewportWidth * 0.7));
-        const defaultHeight = Math.min(620, Math.max(240, viewportHeight * 0.6));
-        const width = Math.min(viewportWidth * 0.9, Math.max(320, sizeOverride?.width ?? defaultWidth));
-        const height = Math.min(viewportHeight * 0.8, Math.max(240, sizeOverride?.height ?? defaultHeight));
-        const offset = Math.min(48, offsetIndex * 12);
-        return {
-            x: Math.max(16, Math.round((viewportWidth - width) / 2) + offset),
-            y: Math.max(16, Math.round((viewportHeight - height) / 2) + offset),
-            width,
-            height,
-        };
-    };
 
+    const runFocusAnimation = (id) => {
+        if (prefersReducedMotion()) return;
+        setAnimationStyle(id, {
+            transition: "transform 140ms ease-out, opacity 140ms ease-out",
+            transform: "scale(1.01)",
+            opacity: 1,
+        });
+        if (animationTimersRef.current[id]) {
+            window.clearTimeout(animationTimersRef.current[id]);
+        }
+        animationTimersRef.current[id] = window.setTimeout(() => {
+            clearAnimation(id);
+            animationTimersRef.current[id] = null;
+        }, 160);
+    };
     const openWindow = (id, sourceRect) => {
         if (closeTimersRef.current[id]) {
             window.clearTimeout(closeTimersRef.current[id]);
@@ -302,12 +344,17 @@ export const Home = () => {
         }
         setWindowPositions((prev) => {
             if (prev[id]) return prev;
-            const activeCount = Object.keys(openWindows).filter((key) => openWindows[key] && !minimizedWindows[key] && !closingWindows[key]).length;
-            return { ...prev, [id]: getCenteredPosition(activeCount) };
+            const base = getInitialPosition(openWindowCountRef.current);
+            const existing = Object.keys(prev)
+                .filter((key) => windowModes[key] === "active" && !closingWindows[key])
+                .map((key) => prev[key])
+                .filter(Boolean);
+            const nextPos = findNonOverlappingPosition(base, existing);
+            openWindowCountRef.current += 1;
+            return { ...prev, [id]: nextPos };
         });
         setClosingWindows((prev) => ({ ...prev, [id]: false }));
-        setMinimizedWindows((prev) => ({ ...prev, [id]: false }));
-        setOpenWindows((prev) => ({ ...prev, [id]: true }));
+        setWindowModes((prev) => ({ ...prev, [id]: "active" }));
         setWindowOrder((prev) => (prev.includes(id) ? prev : [...prev, id]));
         bringToFront(id);
         requestAnimationFrame(() => {
@@ -317,12 +364,11 @@ export const Home = () => {
 
     const closeWindow = (id) => {
         setClosingWindows((prev) => ({ ...prev, [id]: true }));
-        setMinimizedWindows((prev) => ({ ...prev, [id]: false }));
         if (closeTimersRef.current[id]) {
             window.clearTimeout(closeTimersRef.current[id]);
         }
         closeTimersRef.current[id] = window.setTimeout(() => {
-            setOpenWindows((prev) => ({ ...prev, [id]: false }));
+            setWindowModes((prev) => ({ ...prev, [id]: "inactive" }));
             setClosingWindows((prev) => ({ ...prev, [id]: false }));
             setWindowOrder((prev) => prev.filter((windowId) => windowId !== id));
             closeTimersRef.current[id] = null;
@@ -334,38 +380,41 @@ export const Home = () => {
     };
 
     const restoreWindow = (id, sourceRect) => {
-        setMinimizedWindows((prev) => ({ ...prev, [id]: false }));
+        setWindowModes((prev) => ({ ...prev, [id]: "active" }));
         bringToFront(id);
         requestAnimationFrame(() => {
-            runOpenAnimation(id, sourceRect ?? getDockRect(id));
+            runOpenAnimation(id, sourceRect ?? getLauncherRect(id));
         });
     };
 
     const openOrRestoreWindow = (id) => {
-        if (openWindows[id] && minimizedWindows[id]) {
-            restoreWindow(id, getDockRect(id));
+        if (windowModes[id] === "background") {
+            restoreWindow(id, getLauncherRect(id));
         } else {
             openWindow(id, getLauncherRect(id));
         }
     };
 
-    const toggleZoomWindow = (id) => {
-        setZoomedWindows((prev) => {
-            const next = !prev[id];
-            if (next) {
-                setWindowPositions((posPrev) => {
-                    const current = posPrev[id];
-                    if (!current) return posPrev;
-                    const centered = getCenteredPosition(0, {
-                        width: current.width,
-                        height: current.height,
-                    });
-                    return { ...posPrev, [id]: { ...current, x: centered.x, y: centered.y } };
-                });
-            }
-            return { ...prev, [id]: next };
-        });
+    const handleAppButtonClick = (id, rect) => {
+        const mode = windowModes[id] ?? "inactive";
+        if (mode === "inactive") {
+            openWindow(id, rect);
+            return;
+        }
+        if (mode === "background") {
+            restoreWindow(id, rect);
+            return;
+        }
         bringToFront(id);
+        runFocusAnimation(id);
+        setTitleFlash((prev) => ({ ...prev, [id]: true }));
+        window.setTimeout(() => {
+            setTitleFlash((prev) => ({ ...prev, [id]: false }));
+        }, 300);
+    };
+
+    const toggleZoomWindow = (id) => {
+        setZoomedWindows((prev) => ({ ...prev, [id]: !prev[id] }));
     };
 
     useEffect(() => {
@@ -395,28 +444,37 @@ export const Home = () => {
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, []);
 
-    const hasVisibleWindows = Object.keys(openWindows).some(
-        (id) => openWindows[id] && !minimizedWindows[id] && !closingWindows[id]
+    const hasVisibleWindows = Object.keys(windowModes).some(
+        (id) => windowModes[id] === "active" && !closingWindows[id]
     );
 
     return (
         <div className="os-screen fixed inset-0 text-foreground overflow-hidden">
             <div className="os-topbar flex h-12 items-center justify-between border-b px-4">
                 <div className="font-semibold text-sm os-text">
-                    Tjwu.OS v1.0 <span className="os-accent ml-2">SYSTEM READY</span>
+                    tjwu.OS v1.0 <span className="os-accent ml-2">SYSTEM READY</span>
                 </div>
                 <div className="flex gap-2">
-                    {["about", "projects", "skills", "resume", "contact"].map((id) => (
-                        <button
-                            key={id}
-                            type="button"
-                            data-app={id}
-                            onClick={(event) => openWindow(id, event.currentTarget.getBoundingClientRect())}
-                            className="os-button border px-3 py-1 text-sm font-medium"
-                        >
-                            {windowConfig[id].title}
-                        </button>
-                    ))}
+                    {["about", "projects", "skills", "resume", "contact"].map((id) => {
+                        const mode = windowModes[id] ?? "inactive";
+                        const stateClass = mode === "active"
+                            ? "os-app-btn--active"
+                            : mode === "background"
+                                ? "os-app-btn--background"
+                                : "os-app-btn--inactive";
+                        return (
+                            <button
+                                key={id}
+                                type="button"
+                                data-app={id}
+                            onClick={(event) => handleAppButtonClick(id, event.currentTarget.getBoundingClientRect())}
+                                className={`os-button os-app-btn border px-3 py-1 text-sm font-medium ${stateClass}`}
+                            >
+                                <span>{windowConfig[id].title}</span>
+                                {mode === "background" && <span className="os-app-indicator" />}
+                            </button>
+                        );
+                    })}
                 </div>
                 <div className="text-xs os-muted">
                     {clock} <span className="os-accent ml-2">SYSTEM ONLINE</span>
@@ -424,6 +482,9 @@ export const Home = () => {
             </div>
 
             <div className="relative h-[calc(100%-3rem)] w-full">
+                <div className="pointer-events-none absolute top-4 right-4 text-xs os-muted">
+                    TJWU.OS Workspace
+                </div>
                 <div
                     className={`os-boot fixed left-1/2 top-1/2 w-[90vw] max-w-xl -translate-x-1/2 -translate-y-1/2 border px-6 py-5 text-center ${hasVisibleWindows ? "os-boot--dimmed pointer-events-none z-0" : "os-boot--active pointer-events-auto z-20"}`}
                 >
@@ -433,24 +494,25 @@ export const Home = () => {
                     </div>
                 </div>
                 {windowOrder.map((id) => (
-                    (openWindows[id] || closingWindows[id]) && windowPositions[id] && !minimizedWindows[id] ? (
+                    windowModes[id] === "active" ? (
                         <OSWindow
                             key={id}
                             title={windowConfig[id].title}
                             onClose={() => runCloseAnimation(id)}
                             onFocus={() => bringToFront(id)}
-                            onMinimize={() => minimizeWindow(id)}
+                            onMinimize={() => {
+                                if (windowModes[id] === "active") {
+                                    minimizeWindow(id);
+                                }
+                            }}
                             onToggleZoom={() => toggleZoomWindow(id)}
                             zIndex={windowZIndex[id] ?? 100}
-                            isOpen={openWindows[id] && !closingWindows[id]}
+                            isOpen={!closingWindows[id]}
                             position={windowPositions[id]}
                             isZoomed={!!zoomedWindows[id]}
                             animationStyle={windowAnimations[id]}
                             windowId={id}
-                            isActive={getTopmostVisibleId() === id}
-                            onPositionChange={(nextPosition) =>
-                                setWindowPositions((prev) => ({ ...prev, [id]: nextPosition }))
-                            }
+                            titleFlash={!!titleFlash[id]}
                         >
                             {windowConfig[id].content}
                         </OSWindow>
@@ -458,19 +520,6 @@ export const Home = () => {
                 ))}
                 <div className="pointer-events-none absolute bottom-4 right-4 text-xs os-muted">
                     PORTFOLIO INTERFACE
-                </div>
-                <div className="absolute bottom-4 left-4 flex items-center gap-2">
-                    {Object.keys(windowConfig).filter((id) => minimizedWindows[id]).map((id) => (
-                        <button
-                            key={id}
-                            type="button"
-                            data-dock={id}
-                            onClick={(event) => restoreWindow(id, event.currentTarget.getBoundingClientRect())}
-                            className="os-button border px-3 py-1 text-xs"
-                        >
-                            {windowConfig[id].title}
-                        </button>
-                    ))}
                 </div>
             </div>
         </div>
