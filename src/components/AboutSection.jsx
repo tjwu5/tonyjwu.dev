@@ -7,16 +7,16 @@ export const AboutSection = () => {
     return (
         <section id="about" className="py-6">
             <div className="flex flex-col gap-6">
-                <div className="flex items-start justify-between gap-4 border-b border-border pb-4">
+                <div className="flex flex-col gap-4 border-b border-border pb-4 sm:flex-row sm:items-start sm:justify-between">
                     <div>
                         <p className="text-xs os-muted">PROFILE CARD</p>
-                        <h1 className="text-2xl font-semibold os-text">Tony Wu</h1>
+                        <h1 className="text-xl font-semibold os-text sm:text-2xl">Tony Wu</h1>
                         <p className="text-sm os-muted">STATUS: ACTIVE · LAST UPDATED: JAN 2026</p>
                     </div>
                     <img
                         src={myPhoto}
                         alt="Tony Wu"
-                        className="h-24 w-24 rounded-full border border-border object-cover"
+                        className="h-20 w-20 rounded-full border border-border object-cover sm:h-24 sm:w-24"
                     />
                 </div>
 
@@ -45,7 +45,7 @@ export const AboutSection = () => {
                     <p className="mt-2 text-sm os-text">
                         Feel free to connect with me through my socials!
                     </p>
-                    <div className="mt-3 flex justify-start">
+                    <div className="mt-3 flex flex-wrap justify-start gap-2">
                         <SocialButtons />
                     </div>
                 </div>
