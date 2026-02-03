@@ -1,38 +1,63 @@
-# CMPT 276 Mini Project 
+# Tony Wu — Portfolio
 
-# AI Declaration Form
-[View AI Declaration PDF](public/AI_FORM.pdf)
+Personal portfolio website showcasing my projects, experience, and contact information.
 
-# Why I chose MIT License
-When I first set up my repository, I chose it because it was the one that was introduced to us in class. However, after doing some further research on my own, and comparing it with some of the other licenses, it did feel the most appropriate. As one of the most popular open-source licenses, it allows others to use my code freely to do whatever they wish, still remaining credit for myself, and also protects me from any liability issues that my code may end up causing. 
+## Tech Stack
 
-# Resources/Open Source Code Used in My Project
-[Resource 1: Tutorial I used for majority of website setup and learning the basics of React/Tailwind](https://youtu.be/ifOJ0R5UQOc?si=XE11-qhQhTAS3VqZ)
+- React
+- Vite
+- Tailwind CSS
+- Node.js / npm
 
-[Resource 2: Used for Socials Buttons](https://uiverse.io/aadium/proud-swan-48)
+## Local Development
 
-[Resource 3: Used for Skills Bar](https://uiverse.io/Juanes200122/yellow-dog-17)
+```bash
+npm install
+npm run dev
+```
 
-# Wireframes
-## Hero Section
-![Hero Section Wireframe](src/assets/wireframes/hero.jpg)
-- Nav bar at the top, along with logo
-- Greeting message
-- Can include additional buttons like contact and resume download if time allows
+```bash
+npm run build
+npm run preview
+```
 
-## About Section
-![About Section Wirefram](src/assets/wireframes/about.jpg)
-- Profile image
-- Summary of an introduction of me
+## Project Structure
 
-## Skills Section
-![Skills Section Wireframe](src/assets/wireframes/skills.jpg)
-- List of skills and proficiency, both technical and non-technical
+- `src/components` — UI components and section modules
+- `src/pages` — page-level layout and routing
+- `src/assets` — images and design assets
+- `public` — static files (resume, audio, etc.)
+- `src/index.css` — global styles and theme tokens
 
-## Experiences Section
-![Experiences Section Wireframe](src/assets/wireframes/experiences.jpg)
-- List out all my experiences -- each with image(s) and link to work
+## Customization
 
-## Contact Section
-![Contact Section Wireframe](src/assets/wireframes/contact.jpg)
-- Contact information
+- Projects list: `src/components/ExperienceSection.jsx`
+- About content: `src/components/AboutSection.jsx`
+- Skills content: `src/components/SkillsSection.jsx`
+- Contact details: `src/components/ContactSection.jsx`
+- Resume link: `src/pages/Home.jsx` (downloads from `public/Resume_TonyWu.pdf`)
+- Theme + OS styling: `src/index.css`
+- Background audio: `public/audio/bg.mp3`
+
+## Deployment
+
+This repo includes a deploy script for GitHub Pages:
+
+```bash
+npm run build
+npm run deploy
+```
+
+## License
+
+MIT — see `LICENSE`.
+
+## Design (Optional)
+
+Wireframe references:
+
+- `src/assets/wireframes/hero.jpg`
+- `src/assets/wireframes/about.jpg`
+- `src/assets/wireframes/skills.jpg`
+- `src/assets/wireframes/experiences.jpg`
+- `src/assets/wireframes/contact.jpg`
