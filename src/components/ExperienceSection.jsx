@@ -14,6 +14,33 @@ export const ExperienceSection = () => {
           <div className="border border-border p-4">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
               <div>
+                <p className="font-semibold">SafeDrive AI — Driver Safety Monitor</p>
+                <p className="text-xs os-muted">Personal Project · Jan 2026</p>
+              </div>
+              <div className="flex flex-wrap gap-2 text-xs">
+                <span className="border border-border px-2 py-0.5">React</span>
+                <span className="border border-border px-2 py-0.5">Vite</span>
+                <span className="border border-border px-2 py-0.5">Tailwind CSS</span>
+                <span className="border border-border px-2 py-0.5">Node.js</span>
+                <span className="border border-border px-2 py-0.5">JavaScript (ES6+)</span>
+                <span className="border border-border px-2 py-0.5">Google MediaPipe Face Mesh</span>
+                <span className="border border-border px-2 py-0.5">Web APIs</span>
+              </div>
+            </div>
+            <ul className="mt-3 space-y-1 os-muted">
+              <li>Real-time biometrics: Eye Aspect Ratio (EAR) for blink/drowsiness + yaw/pitch for distraction.</li>
+              <li>Smart alert system: Tier 1 alerts (2s response window), Tier 2 “3rd strike” triggers immediate SOS mode.</li>
+              <li>Persistent status UI: high-contrast orange state after repeated drowsiness events.</li>
+              <li>Emergency SOS sequence: 3-second countdown that triggers a simulated emergency contact protocol if unresponsive.</li>
+              <li>Runs fully in-browser with webcam permissions (Chrome/Edge recommended).</li>
+            </ul>
+            <div className="mt-3 flex flex-col gap-2 text-xs sm:flex-row sm:gap-3">
+              <a className="os-button border px-2 py-1 text-center w-full sm:w-auto" href="https://github.com/tjwu5/SafeDrive-AI" target="_blank" rel="noopener noreferrer">Repo</a>
+            </div>
+          </div>
+          <div className="border border-border p-4">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+              <div>
                 <p className="font-semibold">FindMyPath — Career Path Recommender</p>
                 <p className="text-xs os-muted">CMPT 310 · Sep - Nov 2025</p>
               </div>
