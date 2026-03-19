@@ -11,6 +11,29 @@ export const ExperienceSection = () => {
         </div>
 
         <div className="space-y-4 text-sm os-text">
+          
+          <div className="border border-border p-4">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <p className="font-semibold">KeyboardTrainer</p>
+                <p className="text-xs os-muted">SFU Surge · Jan 2026 – Present</p>
+              </div>
+              <div className="flex flex-wrap gap-2 text-xs">
+                <span className="border border-border px-2 py-0.5">Electron</span>
+                <span className="border border-border px-2 py-0.5">OpenCV</span>
+                <span className="border border-border px-2 py-0.5">MediaPipe</span>
+              </div>
+            </div>
+            <ul className="mt-3 space-y-1 os-muted">
+              <li>Defined product vision and roadmap for an AI-assisted keyboard training platform, coordinating a team of 4 developers to deliver core features and milestones.</li>
+              <li>Built a real-time hand placement detection system using OpenCV and MediaPipe, training a computer vision model on 50+ labelled keyboard hand-placement images I personally captured and annotated.</li>
+              <li>Ran regular sprint check-ins and defined development milestones to keep the team aligned and maintain delivery timelines.</li>
+            </ul>
+            <div className="mt-3 flex flex-col gap-2 text-xs sm:flex-row sm:gap-3">
+              <a className="os-button border px-2 py-1 text-center w-full sm:w-auto" href="https://github.com/angelo-yap/keyboard-trainer" target="_blank" rel="noopener noreferrer">Repo</a>
+            </div>
+          </div>
+
           <div className="border border-border p-4">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
               <div>
@@ -38,6 +61,7 @@ export const ExperienceSection = () => {
               <a className="os-button border px-2 py-1 text-center w-full sm:w-auto" href="https://github.com/tjwu5/SafeDrive-AI" target="_blank" rel="noopener noreferrer">Repo</a>
             </div>
           </div>
+
           <div className="border border-border p-4">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
               <div>
