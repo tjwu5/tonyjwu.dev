@@ -1,17 +1,68 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { additionalProjects, featuredProjects } from "@/content";
+import typrDemo from "@/assets/videos/typr.mp4";
 
-function ProjectLinks({ live, repo }) {
+const demos = {
+  typr: typrDemo,
+};
+
+function LoopingDemo({ src, label }) {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => {
+      if (motion.matches) {
+        video.pause();
+        return;
+      }
+      video.play().catch(() => {});
+    };
+
+    sync();
+    video.addEventListener("loadeddata", sync);
+    motion.addEventListener("change", sync);
+    return () => {
+      video.removeEventListener("loadeddata", sync);
+      motion.removeEventListener("change", sync);
+    };
+  }, [src]);
+
+  return (
+    <video
+      ref={videoRef}
+      className="mt-4 aspect-video w-full rounded-sm border border-border object-cover"
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="auto"
+      aria-label={label}
+    >
+      <source src={src} type="video/mp4" />
+    </video>
+  );
+}
+
+const outboundLink =
+  "os-button inline-flex h-8 items-center rounded-sm border px-2.5 text-sm";
+const disclosure =
+  "inline-flex h-8 items-center text-sm os-muted underline-offset-4 hover:underline";
+
+function OutboundLinks({ live, repo }) {
   if (!live && !repo) return null;
 
   return (
-    <div className="mt-4 flex flex-wrap gap-2">
+    <div className="flex flex-wrap items-center gap-2">
       {live ? (
         <a
           href={live}
           target="_blank"
           rel="noopener noreferrer"
-          className="os-button inline-flex min-h-11 items-center border px-3 py-1 text-sm"
+          className={outboundLink}
         >
           Live
         </a>
@@ -21,11 +72,25 @@ function ProjectLinks({ live, repo }) {
           href={repo}
           target="_blank"
           rel="noopener noreferrer"
-          className="os-button inline-flex min-h-11 items-center border px-3 py-1 text-sm"
+          className={outboundLink}
         >
           Repo
         </a>
       ) : null}
+    </div>
+  );
+}
+
+function ActionRow({ live, repo, children }) {
+  const hasOutbound = Boolean(live || repo);
+
+  return (
+    <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
+      <OutboundLinks live={live} repo={repo} />
+      {hasOutbound && children ? (
+        <span className="hidden h-3.5 w-px bg-border sm:block" aria-hidden="true" />
+      ) : null}
+      {children}
     </div>
   );
 }
@@ -38,10 +103,10 @@ function DevNote({ id, lines }) {
   const noteId = `dev-note-${id}`;
 
   return (
-    <div className="mt-4">
+    <>
       <button
         type="button"
-        className="inline-flex min-h-11 items-center text-sm os-muted underline-offset-4 hover:underline"
+        className={disclosure}
         aria-expanded={open}
         aria-controls={noteId}
         onClick={() => setOpen((value) => !value)}
@@ -49,13 +114,16 @@ function DevNote({ id, lines }) {
         Dev note
       </button>
       {open ? (
-        <ul id={noteId} className="mt-2 list-disc space-y-1 pl-5 text-sm os-muted">
+        <ul
+          id={noteId}
+          className="mt-1 w-full basis-full list-disc space-y-1 pl-5 text-sm os-muted"
+        >
           {lines.map((line) => (
             <li key={line}>{line}</li>
           ))}
         </ul>
       ) : null}
-    </div>
+    </>
   );
 }
 
@@ -71,10 +139,11 @@ function FeaturedCard({
   bullets,
   live,
   repo,
+  demo,
   devNote,
 }) {
   return (
-    <article className="border border-border p-5">
+    <article id={id} className="scroll-mt-24 border border-border p-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-1">
           <h3 className="text-xl font-semibold">{name}</h3>
@@ -95,13 +164,17 @@ function FeaturedCard({
           ))}
         </div>
       </div>
+      {demos[demo] ? (
+        <LoopingDemo src={demos[demo]} label={`${name} demo`} />
+      ) : null}
       <ul className="mt-4 list-disc space-y-1 pl-5 text-sm">
         {bullets.map((bullet) => (
           <li key={bullet}>{bullet}</li>
         ))}
       </ul>
-      <DevNote id={id} lines={devNote} />
-      <ProjectLinks live={live} repo={repo} />
+      <ActionRow live={live} repo={repo}>
+        <DevNote id={id} lines={devNote} />
+      </ActionRow>
     </article>
   );
 }
@@ -121,10 +194,13 @@ function AdditionalCard({
   open,
   onToggle,
 }) {
+  const [noteOpen, setNoteOpen] = useState(false);
   const bulletsId = `project-bullets-${id}`;
+  const noteId = `dev-note-${id}`;
+  const hasNote = Array.isArray(devNote) && devNote.length > 0;
 
   return (
-    <article className="border-l border-border py-1 pl-4">
+    <article id={id} className="scroll-mt-24 border-l border-border py-1 pl-4">
       <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div>
           <h3 className="text-sm font-semibold">{name}</h3>
@@ -143,27 +219,48 @@ function AdditionalCard({
           ))}
         </div>
       </div>
-      <ProjectLinks live={live} repo={repo} />
-      <button
-        type="button"
-        className="mt-1 inline-flex min-h-11 items-center text-sm os-muted underline-offset-4 hover:underline"
-        aria-expanded={open}
-        aria-controls={bulletsId}
-        onClick={onToggle}
-      >
-        Details
-      </button>
-      {open ? (
-        <ul
-          id={bulletsId}
-          className="mt-2 list-disc space-y-1 pl-5 text-sm os-muted"
+      <ActionRow live={live} repo={repo}>
+        <button
+          type="button"
+          className={disclosure}
+          aria-expanded={open}
+          aria-controls={bulletsId}
+          onClick={onToggle}
         >
-          {bullets.map((bullet) => (
-            <li key={bullet}>{bullet}</li>
-          ))}
-        </ul>
-      ) : null}
-      <DevNote id={id} lines={devNote} />
+          Details
+        </button>
+        {hasNote ? (
+          <button
+            type="button"
+            className={disclosure}
+            aria-expanded={noteOpen}
+            aria-controls={noteId}
+            onClick={() => setNoteOpen((value) => !value)}
+          >
+            Dev note
+          </button>
+        ) : null}
+        {open ? (
+          <ul
+            id={bulletsId}
+            className="mt-1 w-full basis-full list-disc space-y-1 pl-5 text-sm os-muted"
+          >
+            {bullets.map((bullet) => (
+              <li key={bullet}>{bullet}</li>
+            ))}
+          </ul>
+        ) : null}
+        {noteOpen ? (
+          <ul
+            id={noteId}
+            className="mt-1 w-full basis-full list-disc space-y-1 pl-5 text-sm os-muted"
+          >
+            {devNote.map((line) => (
+              <li key={line}>{line}</li>
+            ))}
+          </ul>
+        ) : null}
+      </ActionRow>
     </article>
   );
 }

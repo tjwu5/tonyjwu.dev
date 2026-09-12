@@ -22,11 +22,9 @@ export const entries = [
     date: "2026-09-12",
     tags: ["site", "decision"],
     summary:
-      "Kill tjwu.OS. Rebuild the site so it can be personal without being a gimmick.",
+      "hello, world?",
     highlights: [
-      "The old site was a fake desktop: windows, background music, click-to-open apps. Fun to build. Exhausting to screen. In eight seconds a recruiter learned I could make a novelty, not who I am or what I have shipped.",
-      "The rebuild is a scrolling page — name, intern ask, work, resume — light type, no chrome. Personal in the voice and the calls I am willing to put in public. Professional in what it puts first.",
-      "I am keeping this log here instead of performing updates on LinkedIn. Dated notes on ships and decisions, including this one.",
+      "first blog post, kinda nervous! so the old website was too gimmicky. i tried to make it look like something maybe tony stark built, but it was too much. end of that, it was nice while it lasted. the new version is (hopefully) a lot better. i made sure it's still personal in the voice and the calls i am willing to put in public. professional in what it puts first. there's a lot of updates i want to make, so look out for more version updates. i'm keeping this log here instead of updates on linkedin. at times can be way too intimidating. i'm also gonna keep notes on ships and decisions, including this one. okay that's it bye.",
     ],
   },
 ];

@@ -58,7 +58,7 @@ function ExperienceCard({
   const bulletsId = `experience-bullets-${id}`;
 
   return (
-    <article id={id} className="border border-border p-4">
+    <article id={id} className="scroll-mt-24 border border-border p-4">
       <div className="flex items-start gap-3">
         <OrgMark
           src={logos[logo]}
@@ -86,7 +86,7 @@ function ExperienceCard({
           {lede ? <p className="mt-3 text-sm">{lede}</p> : null}
           <button
             type="button"
-            className="mt-1 inline-flex min-h-11 items-center text-sm os-muted underline-offset-4 hover:underline"
+            className="mt-1 inline-flex min-h-8 items-center text-sm os-muted underline-offset-4 hover:underline"
             aria-expanded={open}
             aria-controls={bulletsId}
             onClick={onToggle}

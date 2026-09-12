@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
 import { LatestShip } from "@/components/LatestShip";
+// import { TimelineRail } from "@/components/TimelineRail";
 import { ExperienceSection } from "@/components/ExperienceSection";
 import { ProjectsSection } from "@/components/ProjectsSection";
 import { SkillsSection } from "@/components/SkillsSection";
@@ -25,6 +26,7 @@ export const Home = () => {
           <Hero />
           <LatestShip />
         </div>
+        {/* <TimelineRail /> */}
         <ExperienceSection />
         <ProjectsSection />
         <SkillsSection />
