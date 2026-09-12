@@ -149,6 +149,10 @@ export const featuredProjects = [
     ],
     live: null,
     repo: "https://github.com/angelo-yap/keyboard-trainer",
+    devNote: [
+      "No live demo — it’s an Electron desktop MVP, so the proof is the repo.",
+      "The posture model was trained on 50+ labeled images: enough to run in real time, not a production set.",
+    ],
   },
 ];
 
