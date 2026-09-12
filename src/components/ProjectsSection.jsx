@@ -281,7 +281,7 @@ export const ProjectsSection = () => {
         ))}
       </div>
       <div className="space-y-4">
-        <h3 className="text-sm font-semibold tracking-wide os-muted">Additional</h3>
+        <h3 className="text-sm font-semibold tracking-wide os-muted">Additional Projects</h3>
         <div className="space-y-5">
           {additionalProjects.map((project) => (
             <AdditionalCard
