@@ -461,12 +461,9 @@ export const Home = () => {
     }, []);
 
     useEffect(() => {
-        const savedEnabled = localStorage.getItem("tjwu.os.music.enabled");
         const savedVolume = localStorage.getItem("tjwu.os.music.volume");
         const savedTime = localStorage.getItem("tjwu.os.music.time");
-        if (savedEnabled === "true") {
-            setMusicEnabled(true);
-        }
+        // Do not restore musicEnabled — browsers block autoplay and we defer loading the track.
         if (savedVolume) {
             const parsed = Number.parseFloat(savedVolume);
             if (!Number.isNaN(parsed)) {
@@ -477,12 +474,7 @@ export const Home = () => {
         if (savedTime) {
             const parsed = Number.parseFloat(savedTime);
             if (!Number.isNaN(parsed) && parsed >= 0) {
-                const audioEl = audioRef.current;
-                if (audioEl && audioEl.readyState >= 1) {
-                    audioEl.currentTime = parsed;
-                } else {
-                    pendingStartTimeRef.current = parsed;
-                }
+                pendingStartTimeRef.current = parsed;
             }
         }
     }, []);
@@ -520,9 +512,29 @@ export const Home = () => {
         }, stepMs);
     };
 
+    const ensureAudioSource = () => {
+        const audioEl = audioRef.current;
+        if (!audioEl) return Promise.resolve();
+        if (audioEl.dataset.srcAttached === "true") return Promise.resolve();
+
+        return new Promise((resolve) => {
+            const onReady = () => {
+                audioEl.removeEventListener("canplaythrough", onReady);
+                audioEl.removeEventListener("loadedmetadata", onReady);
+                resolve();
+            };
+            audioEl.addEventListener("canplaythrough", onReady);
+            audioEl.addEventListener("loadedmetadata", onReady);
+            audioEl.src = "/audio/bg.mp3";
+            audioEl.dataset.srcAttached = "true";
+            audioEl.load();
+        });
+    };
+
     const startPlayback = async () => {
         const audioEl = audioRef.current;
         if (!audioEl) return;
+        await ensureAudioSource();
         const savedTime = localStorage.getItem("tjwu.os.music.time");
         const parsed = savedTime ? Number.parseFloat(savedTime) : NaN;
         const hasSavedTime = !Number.isNaN(parsed) && parsed >= 0;
@@ -1077,7 +1089,7 @@ export const Home = () => {
 
     return (
         <div className="os-screen fixed inset-0 text-foreground overflow-hidden flex flex-col min-h-screen">
-            <audio ref={audioRef} src="/audio/bg.mp3" loop preload="auto" onLoadedMetadata={handleAudioLoadedMetadata} />
+            <audio ref={audioRef} loop preload="none" onLoadedMetadata={handleAudioLoadedMetadata} />
             <div className="os-bg-layer" aria-hidden="true">
                 <canvas className="os-grid-canvas" ref={gridCanvasRef} />
                 <div className="os-bg-glow" />
@@ -1152,6 +1164,16 @@ export const Home = () => {
                                 }
                             }}
                             onToggleZoom={() => toggleZoomWindow(id)}
+                            onMove={isMobile || zoomedWindows[id] ? undefined : (nextPos) => {
+                                setWindowPositions((prev) => {
+                                    const current = prev[id];
+                                    if (!current) return prev;
+                                    return {
+                                        ...prev,
+                                        [id]: { ...current, x: nextPos.x, y: nextPos.y },
+                                    };
+                                });
+                            }}
                             zIndex={windowZIndex[id] ?? 100}
                             isOpen={!closingWindows[id]}
                             position={windowPositions[id]}
