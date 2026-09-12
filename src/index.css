@@ -9,6 +9,9 @@
   --color-primary: hsl(var(--primary));
   --color-primary-foreground: hsl(var(--primary-foreground));
 
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
   --color-card: hsl(var(--card));
 
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
@@ -24,18 +27,26 @@
     --primary: 222 18% 24%;
     --primary-foreground: 40 14% 97%;
 
+    --accent: 22 48% 36%;
+    --accent-foreground: 40 14% 97%;
+
     --border: 220 10% 84%;
 
     --os-text: hsl(222 16% 12%);
     --os-muted: hsl(220 8% 38%);
     --os-border: hsl(220 10% 84%);
-    --os-accent: hsl(222 18% 24%);
+    --os-accent: hsl(var(--accent));
     --os-panel: hsl(0 0% 100%);
     --os-bg: hsl(40 14% 97%);
   }
 
   * {
     @apply border-border;
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--accent));
+    outline-offset: 2px;
   }
 
   html {
@@ -76,13 +87,41 @@
   color: var(--os-muted);
 }
 
-.os-button {
+.os-button,
+.os-chip {
   border-color: var(--os-border);
-  color: var(--os-text);
   background-color: transparent;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+}
+
+.os-button {
+  color: var(--os-text);
   cursor: pointer;
 }
 
-.os-button:hover {
-  background-color: hsl(220 10% 94%);
+.os-button:hover,
+.os-chip:hover {
+  background-color: hsl(var(--accent) / 0.08);
+  border-color: hsl(var(--accent));
+  color: hsl(var(--accent));
+}
+
+nav[aria-label="Primary"] {
+  transition: border-color 150ms ease;
+}
+
+nav[aria-label="Primary"]:hover,
+nav[aria-label="Primary"]:focus-within {
+  border-color: hsl(var(--accent) / 0.55);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .os-button,
+  .os-chip,
+  nav[aria-label="Primary"] {
+    transition: none;
+  }
 }

@@ -46,7 +46,7 @@ function FeaturedCard({ name, role, org, dates, award, summary, tags, bullets, l
         </div>
         <div className="flex flex-wrap gap-2 text-xs">
           {tags.map((tag) => (
-            <span key={tag} className="border border-border px-2 py-0.5">
+            <span key={tag} className="os-chip border px-2 py-0.5">
               {tag}
             </span>
           ))}
@@ -77,7 +77,7 @@ function AdditionalCard({ name, role, dates, context, summary, tags, bullets, li
         </div>
         <div className="flex flex-wrap gap-2 text-xs">
           {tags.map((tag) => (
-            <span key={tag} className="border border-border px-2 py-0.5">
+            <span key={tag} className="os-chip border px-2 py-0.5">
               {tag}
             </span>
           ))}
