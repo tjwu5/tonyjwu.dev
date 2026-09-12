@@ -1,6 +1,6 @@
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
-import { ExperienceSection } from "@/components/ExperienceSection";
+import { ProjectsSection } from "@/components/ProjectsSection";
 import { SkillsSection } from "@/components/SkillsSection";
 import { ContactSection } from "@/components/ContactSection";
 
@@ -12,7 +12,7 @@ export const Home = () => {
         <Hero />
         <section id="work" className="scroll-mt-24">
           <div id="experience" className="scroll-mt-24" />
-          <ExperienceSection />
+          <ProjectsSection />
         </section>
         <SkillsSection />
         <ContactSection />
