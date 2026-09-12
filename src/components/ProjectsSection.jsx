@@ -106,7 +106,19 @@ function FeaturedCard({
   );
 }
 
-function AdditionalCard({ name, role, dates, context, summary, tags, bullets, live, repo }) {
+function AdditionalCard({
+  id,
+  name,
+  role,
+  dates,
+  context,
+  summary,
+  tags,
+  bullets,
+  live,
+  repo,
+  devNote,
+}) {
   return (
     <article className="border-l border-border py-1 pl-4">
       <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
@@ -132,6 +144,7 @@ function AdditionalCard({ name, role, dates, context, summary, tags, bullets, li
           <li key={bullet}>{bullet}</li>
         ))}
       </ul>
+      <DevNote id={id} lines={devNote} />
       <ProjectLinks live={live} repo={repo} />
     </article>
   );
