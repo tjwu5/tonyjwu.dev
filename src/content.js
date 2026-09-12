@@ -105,7 +105,7 @@ export const leadership = [
     location: "Burnaby, BC",
     onResume: true,
     lede: "Marketing and outreach across 16+ university teams, sponsors, and industry partners.",
-    logoInitials: "CI",
+    logo: "caseit",
     bullets: [
       "Run marketing and outreach for CaseIT across 16+ university teams, sponsors, and industry partners.",
       "Own channel analytics, the content calendar, and brand positioning across student touchpoints.",
@@ -120,7 +120,8 @@ export const leadership = [
     onResume: false,
     needsCopy: true,
     lede: "Coordinate external partnerships and outreach for SFU Esports.",
-    logoInitials: "SE",
+    logo: "esports",
+    logoCrop: "cover",
     bullets: [
       "Coordinate external partnerships and outreach for SFU Esports.",
     ],
@@ -134,7 +135,7 @@ export const leadership = [
     onResume: true,
     lede: "Promoted twice across 3 summer deployments to Company Sergeant Major, responsible for 100+ staff and 1,000+ cadets.",
     logo: "cadets",
-    logoCrop: "right",
+    logoCrop: "cover",
     bullets: [
       "Promoted twice across 3 summer deployments to Company Sergeant Major, responsible for 100+ staff and 1,000+ cadets.",
       "Moved from classroom instruction to operations: daily stand-ups, cross-unit planning, and performance reviews to unstick logistics between groups.",

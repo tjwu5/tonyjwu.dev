@@ -3,11 +3,15 @@ import { experience, leadership } from "@/content";
 import tsbcLogo from "@/assets/images/TSBC.svg";
 import berealLogo from "@/assets/images/BEREAL.jpg";
 import cadetsLogo from "@/assets/images/Cadets.webp";
+import caseitLogo from "@/assets/images/CaseIT.png";
+import esportsLogo from "@/assets/images/sfuesports.png";
 
 const logos = {
   tsbc: tsbcLogo,
   bereal: berealLogo,
   cadets: cadetsLogo,
+  caseit: caseitLogo,
+  esports: esportsLogo,
 };
 
 function OrgMark({ src, crop, initials, org }) {
@@ -22,7 +26,9 @@ function OrgMark({ src, crop, initials, org }) {
               ? "size-full object-cover object-left"
               : crop === "right"
                 ? "size-full object-cover object-right"
-                : "max-h-7 max-w-8 object-contain"
+                : crop === "cover"
+                  ? "size-full object-cover"
+                  : "size-full object-contain p-1"
           }
         />
       ) : (
