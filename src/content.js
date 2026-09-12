@@ -19,7 +19,7 @@ export const profile = {
   name: "Tony Wu",
   legalName: "Tony J. Wu",
   headline:
-    "SFU Computing Science student (Business minor) seeking internships in software, product, and tech consulting.",
+    "Developer with a product mindset, bridging solid technical systems with user-first design. Seeking software and tech consulting internships.",
   school: "Simon Fraser University",
   degree: "BSc Computing Science",
   minor: "Business Administration",
@@ -41,7 +41,7 @@ export const nav = [
 ];
 
 export const hero = {
-  kicker: "Intern / co-op",
+  kicker: "CS + Business @ SFU",
   name: profile.name,
   headline: profile.headline,
   education: [
@@ -59,10 +59,6 @@ export const hero = {
     },
   ],
   location: profile.location,
-  awards: [
-    "StormForge Hackathon — 2nd place (Typr)",
-    "Lord Strathcona Trust Fund Medal",
-  ],
   primaryCtas: [
     { label: "Resume PDF", href: profile.resumePath, external: true },
     { label: "Email", href: `mailto:${profile.email}` },
