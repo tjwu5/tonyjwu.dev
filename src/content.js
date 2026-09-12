@@ -71,6 +71,8 @@ export const experience = [
     dates: "May 2026 – Aug 2026",
     location: "Burnaby, BC",
     lede: "5-person consulting team on an executive-search visibility strategy, tied to provincial regulatory requirements.",
+    logo: "tsbc",
+    logoCrop: "left",
     bullets: [
       "Led a 5-person consulting team on an executive-search visibility strategy, tying internal discovery workflows to provincial regulatory requirements.",
       "Wrote the project charter, work breakdown structure, and delivery roadmap for a 13-week engagement, and hit the agreed milestones.",
@@ -85,6 +87,7 @@ export const experience = [
     dates: "Nov 2025 – Dec 2025",
     location: "Remote",
     lede: "User research and competitive benchmarking to prioritize 3 features with a projected 10% lift in daily active users.",
+    logo: "bereal",
     bullets: [
       "Combined user research and competitive benchmarking to prioritize 3 features with a projected 10% lift in daily active users.",
       "Iterated prototypes through 5+ review cycles with senior product leads to check what was technically feasible.",
@@ -102,6 +105,7 @@ export const leadership = [
     location: "Burnaby, BC",
     onResume: true,
     lede: "Marketing and outreach across 16+ university teams, sponsors, and industry partners.",
+    logoInitials: "CI",
     bullets: [
       "Run marketing and outreach for CaseIT across 16+ university teams, sponsors, and industry partners.",
       "Own channel analytics, the content calendar, and brand positioning across student touchpoints.",
@@ -116,6 +120,7 @@ export const leadership = [
     onResume: false,
     needsCopy: true,
     lede: "Coordinate external partnerships and outreach for SFU Esports.",
+    logoInitials: "SE",
     bullets: [
       "Coordinate external partnerships and outreach for SFU Esports.",
     ],
@@ -128,6 +133,7 @@ export const leadership = [
     location: "Comox / Vernon, BC",
     onResume: true,
     lede: "Promoted twice across 3 summer deployments to Company Sergeant Major, responsible for 100+ staff and 1,000+ cadets.",
+    logoInitials: "DND",
     bullets: [
       "Promoted twice across 3 summer deployments to Company Sergeant Major, responsible for 100+ staff and 1,000+ cadets.",
       "Moved from classroom instruction to operations: daily stand-ups, cross-unit planning, and performance reviews to unstick logistics between groups.",
