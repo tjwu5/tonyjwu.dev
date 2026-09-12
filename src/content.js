@@ -218,6 +218,12 @@ export const skills = {
   ],
 };
 
+/** One-line chip notes. Keys must match a skill label. Fill more in P9. */
+export const skillNotes = {
+  PRDs: "Typr — wrote the PRDs and ran Agile sprints for 4 months; 8 user tests changed the UX.",
+  React: "EasyChart — led the React frontend and async chart rendering against QuickChart.",
+};
+
 export const contact = {
   email: profile.email,
   linkedin: profile.linkedin,
