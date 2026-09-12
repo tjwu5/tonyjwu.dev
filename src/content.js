@@ -228,10 +228,26 @@ export const skills = {
   ],
 };
 
-/** One-line chip notes. Keys must match a skill label. Fill more in P9. */
+/** One-line chip notes. Keys must match a skill label. Skills with nothing real to say stay mute. */
 export const skillNotes = {
   PRDs: "Typr — wrote the PRDs and ran Agile sprints for 4 months; 8 user tests changed the UX.",
+  "Work breakdown structures":
+    "Technical Safety BC — wrote the charter, work breakdown structure, and delivery roadmap for a 13-week engagement.",
+  "Agile / Scrum":
+    "Typr — ran Agile sprints over 4 months with a team of 4.",
+  "Stakeholder alignment":
+    "Technical Safety BC — presented 3 recommendations to executive evaluators; leadership used the roadmap after the engagement.",
+  "KPI definition":
+    "BeReal — closed with KPI-based recommendations so the proposed work lined up with growth targets.",
+  Python:
+    "FindMyPath — a Python pipeline with pandas cleaning and features on 4,000+ records.",
+  "Market benchmarking":
+    "BeReal — user research and competitive benchmarking to prioritize 3 features with a projected 10% lift in daily active users.",
   React: "EasyChart — led the React frontend and async chart rendering against QuickChart.",
+  "REST APIs":
+    "EasyChart — charts render async through the QuickChart API.",
+  Electron:
+    "Typr — Electron desktop MVP; no live demo, the proof is the repo.",
 };
 
 export const contact = {
