@@ -114,7 +114,10 @@ const externalProps = (isExternal) =>
   isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {};
 
 const ctaClass =
-  "os-button inline-flex min-h-11 items-center border px-4 py-2 text-sm font-semibold";
+  "os-button inline-flex min-h-11 items-center rounded-full border px-4 py-2 text-sm font-semibold";
+
+const ctaPrimaryClass =
+  "inline-flex min-h-11 items-center rounded-full bg-foreground px-4 py-2 text-sm font-semibold text-background transition-colors duration-150 hover:bg-accent hover:text-accent-foreground";
 
 function EmailCta({ href, email }) {
   const [copied, setCopied] = useState(false);
@@ -147,85 +150,73 @@ function EmailCta({ href, email }) {
 
 export const Hero = () => {
   return (
-    <section className="flex flex-col gap-8 overflow-visible">
-      <div className="mx-auto flex w-full max-w-3xl flex-col gap-5 px-6">
-        <p className="text-xs uppercase tracking-wide os-muted">{hero.kicker}</p>
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-          {hero.name}
-        </h1>
-        <p className="max-w-2xl text-base leading-relaxed sm:text-lg">
-          {hero.headline}
-        </p>
-      </div>
-
-      <div className="mx-auto grid w-full max-w-5xl items-end gap-10 px-6 sm:grid-cols-2 sm:gap-12">
-        {hero.education.map((row, index) => {
-          const hangRight = index === 1;
-          return (
-            <figure key={row.school} className={hangRight ? "sm:text-right" : undefined}>
-              <Wordmark
-                src={schoolLogos[row.logo]}
-                knock={row.knock}
-                alt={row.school}
-                className={
-                  hangRight
-                    ? "h-24 w-auto max-w-[min(100%,18rem)] object-contain object-right sm:ml-auto sm:h-36"
-                    : "h-24 w-auto max-w-[min(100%,22rem)] object-contain object-left sm:h-32"
-                }
-              />
-              <figcaption
-                className={
-                  hangRight
-                    ? "mt-3 text-sm leading-snug os-muted sm:ml-auto sm:max-w-[18rem]"
-                    : "mt-3 max-w-[22rem] text-sm leading-snug os-muted"
-                }
-              >
-                {row.logo === "sfu" ? (
-                  row.detail
-                ) : (
-                  <>
-                    <span className="font-medium text-foreground">{row.school}</span>
-                    {" — "}
-                    {row.detail}
-                  </>
-                )}
-              </figcaption>
-            </figure>
-          );
-        })}
-      </div>
-
-      <div className="mx-auto flex w-full max-w-3xl flex-col gap-5 px-6">
-        <p className="text-sm os-muted">
-          {hero.location} · {hero.awards.join(" · ")}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {hero.primaryCtas.map((cta) =>
-            cta.label === "Email" ? (
-              <EmailCta key={cta.label} href={cta.href} email={profile.email} />
-            ) : (
-              <a
-                key={cta.label}
-                href={cta.href}
-                {...externalProps(cta.external)}
-                className={ctaClass}
-              >
-                {cta.label}
-              </a>
-            ),
-          )}
-          {hero.secondaryCtas.map((cta) => (
+    <section className="flex flex-col gap-6">
+      <p className="inline-flex w-fit rounded-full border border-foreground/15 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.14em] os-muted">
+        {hero.kicker}
+      </p>
+      <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+        {hero.name}
+      </h1>
+      <p className="max-w-2xl text-base leading-relaxed os-muted sm:text-lg">
+        {hero.headline}
+      </p>
+      <div className="flex flex-wrap gap-2">
+        {hero.primaryCtas.map((cta) =>
+          cta.label === "Email" ? (
+            <EmailCta key={cta.label} href={cta.href} email={profile.email} />
+          ) : cta.label === "Resume PDF" ? (
             <a
               key={cta.label}
               href={cta.href}
               {...externalProps(cta.external)}
-              className="inline-flex min-h-11 items-center px-3 py-2 text-sm os-muted underline-offset-4 hover:underline"
+              className={ctaPrimaryClass}
             >
               {cta.label}
             </a>
-          ))}
-        </div>
+          ) : (
+            <a
+              key={cta.label}
+              href={cta.href}
+              {...externalProps(cta.external)}
+              className={ctaClass}
+            >
+              {cta.label}
+            </a>
+          ),
+        )}
+        {hero.secondaryCtas.map((cta) => (
+          <a
+            key={cta.label}
+            href={cta.href}
+            {...externalProps(cta.external)}
+            className="inline-flex min-h-11 items-center px-3 py-2 text-sm os-muted underline-offset-4 hover:underline"
+          >
+            {cta.label}
+          </a>
+        ))}
       </div>
+      <div className="grid gap-3 sm:grid-cols-2">
+        {hero.education.map((row) => (
+          <figure
+            key={row.school}
+            className="rounded-[32px] border border-foreground/20 px-5 py-5 transition-[border-color] duration-150 hover:border-accent/55"
+          >
+            <Wordmark
+              src={schoolLogos[row.logo]}
+              knock={row.knock}
+              alt=""
+              className="h-14 w-auto max-w-[11.5rem] object-contain object-left"
+            />
+            <figcaption className="mt-4">
+              <p className="text-sm font-medium">{row.school}</p>
+              <p className="mt-1 text-sm leading-snug os-muted">{row.detail}</p>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+      <p className="text-sm os-muted">
+        {hero.location} · {hero.awards.join(" · ")}
+      </p>
     </section>
   );
 };
