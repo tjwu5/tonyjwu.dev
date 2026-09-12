@@ -1,6 +1,6 @@
-export const ExperienceSection = () => {
+export const ProjectsSection = () => {
   return (
-    <section id="experiences" className="py-4">
+    <section className="py-4">
       <div className="space-y-4">
         <div className="flex flex-col gap-2 border-b border-border pb-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
