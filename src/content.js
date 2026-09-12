@@ -173,6 +173,9 @@ export const additionalProjects = [
     ],
     live: "https://findmypath.streamlit.app/",
     repo: "https://github.com/tjwu5/CMPT310-Project",
+    devNote: [
+      "The 15% accuracy lift is LightGBM tuned against KNN and decision-tree baselines on this 4,000+ record set.",
+    ],
   },
   {
     id: "easychart",
@@ -190,6 +193,9 @@ export const additionalProjects = [
     ],
     live: "https://easychart-omega.vercel.app/",
     repo: "https://github.com/CMPT-276-SUMMER-2025/final-project-5-lakes",
+    devNote: [
+      "Charts render async through the QuickChart API; GitHub Actions was how a 4-person team shipped without a manual release.",
+    ],
   },
 ];
 
