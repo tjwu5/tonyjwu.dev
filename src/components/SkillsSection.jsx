@@ -26,7 +26,7 @@ const infrastructureSkills = [
 
 export const SkillsSection = () => {
     return (
-        <section id="skills" className="py-4">
+        <section id="skills" className="scroll-mt-24 py-4">
             <div className="space-y-4">
                 <div className="flex flex-col gap-2 border-b border-border pb-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>
