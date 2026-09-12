@@ -14,8 +14,8 @@ export const Home = () => {
         <ExperienceSection />
         <ProjectsSection />
         <SkillsSection />
-        <ContactSection />
       </main>
+      <ContactSection />
     </div>
   );
 };
