@@ -10,7 +10,7 @@ export function LogEntry({ id, date, tags, summary, highlights }) {
         </div>
         <div className="flex flex-wrap gap-2 text-xs">
           {tags.map((tag) => (
-            <span key={tag} className="border border-border px-2 py-0.5 font-mono">
+            <span key={tag} className="os-chip border px-2 py-0.5 font-mono">
               {tag}
             </span>
           ))}

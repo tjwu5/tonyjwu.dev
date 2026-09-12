@@ -7,7 +7,7 @@ export function LatestShip() {
 
   return (
     <aside className="border border-border px-4 py-3">
-      <p className="text-xs uppercase tracking-wide os-muted">Latest</p>
+      <p className="text-xs uppercase tracking-wide text-accent">Latest</p>
       <p className="mt-2 font-mono text-xs os-muted">
         {formatLogDate(entry.date)} · {entry.tags[0]}
       </p>

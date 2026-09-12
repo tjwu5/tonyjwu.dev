@@ -16,7 +16,7 @@ export const SkillsSection = () => {
             <p className="text-sm font-semibold tracking-wide os-muted">{group.label}</p>
             <div className="mt-2 flex flex-wrap gap-2">
               {group.items.map((skill) => (
-                <span key={skill} className="border border-border px-3 py-1 text-sm">
+                <span key={skill} className="os-chip border px-3 py-1 text-sm">
                   {skill}
                 </span>
               ))}
