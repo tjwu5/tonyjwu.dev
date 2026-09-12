@@ -1,5 +1,33 @@
 import { useEffect, useRef, useState } from "react";
 import { hero, profile } from "@/content";
+import sfuLogo from "@/assets/images/SFU.png";
+import hkuLogo from "@/assets/images/HKU.png";
+
+const schoolLogos = {
+  sfu: sfuLogo,
+  hku: hkuLogo,
+};
+
+function cropClass(crop) {
+  if (crop === "hku") {
+    return "size-full origin-left scale-[5] object-cover object-[12%_center]";
+  }
+  return "size-full object-cover object-left";
+}
+
+function SchoolMark({ src, crop, school }) {
+  return (
+    <div className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-md border border-foreground/15 bg-card">
+      {src ? (
+        <img src={src} alt="" className={cropClass(crop)} />
+      ) : (
+        <span className="font-mono text-[9px] font-medium os-muted">
+          {school.slice(0, 3).toUpperCase()}
+        </span>
+      )}
+    </div>
+  );
+}
 
 const externalProps = (isExternal) =>
   isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {};
@@ -46,12 +74,24 @@ export const Hero = () => {
       <p className="max-w-2xl text-base leading-relaxed sm:text-lg">
         {hero.headline}
       </p>
-      <ul className="space-y-1 text-sm os-muted">
-        {hero.meta.map((line) => (
-          <li key={line}>{line}</li>
+      <div className="flex flex-col gap-2">
+        {hero.education.map((row) => (
+          <div key={row.school} className="flex items-start gap-2.5">
+            <SchoolMark
+              src={schoolLogos[row.logo]}
+              crop={row.logoCrop}
+              school={row.school}
+            />
+            <p className="min-w-0 text-sm leading-snug">
+              <span className="font-medium">{row.school}</span>
+              <span className="os-muted"> — {row.detail}</span>
+            </p>
+          </div>
         ))}
-      </ul>
-      <p className="text-sm os-muted">{hero.awards.join(" · ")}</p>
+      </div>
+      <p className="text-sm os-muted">
+        {hero.location} · {hero.awards.join(" · ")}
+      </p>
       <div className="flex flex-wrap gap-2">
         {hero.primaryCtas.map((cta) =>
           cta.label === "Email" ? (
