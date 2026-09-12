@@ -70,6 +70,7 @@ export const experience = [
     context: "Strategic advisory engagement",
     dates: "May 2026 – Aug 2026",
     location: "Burnaby, BC",
+    lede: "5-person consulting team on an executive-search visibility strategy, tied to provincial regulatory requirements.",
     bullets: [
       "Led a 5-person consulting team on an executive-search visibility strategy, tying internal discovery workflows to provincial regulatory requirements.",
       "Wrote the project charter, work breakdown structure, and delivery roadmap for a 13-week engagement, and hit the agreed milestones.",
@@ -83,6 +84,7 @@ export const experience = [
     context: "Extern engagement",
     dates: "Nov 2025 – Dec 2025",
     location: "Remote",
+    lede: "User research and competitive benchmarking to prioritize 3 features with a projected 10% lift in daily active users.",
     bullets: [
       "Combined user research and competitive benchmarking to prioritize 3 features with a projected 10% lift in daily active users.",
       "Iterated prototypes through 5+ review cycles with senior product leads to check what was technically feasible.",
