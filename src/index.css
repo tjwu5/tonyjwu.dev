@@ -19,16 +19,16 @@
 
 @layer base {
   :root {
-    --background: 40 14% 97%;
+    --background: 0 0% 96%;
     --foreground: 222 16% 12%;
 
     --card: 0 0% 100%;
 
     --primary: 222 18% 24%;
-    --primary-foreground: 40 14% 97%;
+    --primary-foreground: 0 0% 96%;
 
     --accent: 22 48% 36%;
-    --accent-foreground: 40 14% 97%;
+    --accent-foreground: 0 0% 96%;
 
     --border: 220 10% 84%;
 
@@ -37,7 +37,7 @@
     --os-border: hsl(220 10% 84%);
     --os-accent: hsl(var(--accent));
     --os-panel: hsl(0 0% 100%);
-    --os-bg: hsl(40 14% 97%);
+    --os-bg: #f5f5f5;
   }
 
   * {
