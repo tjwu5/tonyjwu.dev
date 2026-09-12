@@ -1,5 +1,34 @@
 import { useState } from "react";
 import { experience, leadership } from "@/content";
+import tsbcLogo from "@/assets/images/TSBC.svg";
+import berealLogo from "@/assets/images/BEREAL.jpg";
+
+const logos = {
+  tsbc: tsbcLogo,
+  bereal: berealLogo,
+};
+
+function OrgMark({ src, crop, initials, org }) {
+  return (
+    <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-foreground/15 bg-card">
+      {src ? (
+        <img
+          src={src}
+          alt=""
+          className={
+            crop === "left"
+              ? "size-full object-cover object-left"
+              : "max-h-7 max-w-8 object-contain"
+          }
+        />
+      ) : (
+        <span className="px-0.5 text-center font-mono text-[10px] font-medium leading-none tracking-wide os-muted">
+          {initials ?? org.slice(0, 2).toUpperCase()}
+        </span>
+      )}
+    </div>
+  );
+}
 
 function ExperienceCard({
   id,
@@ -9,6 +38,9 @@ function ExperienceCard({
   dates,
   location,
   lede,
+  logo,
+  logoCrop,
+  logoInitials,
   bullets,
   open,
   onToggle,
@@ -18,6 +50,12 @@ function ExperienceCard({
   return (
     <article id={id} className="border border-border p-4">
       <div className="flex items-start gap-3">
+        <OrgMark
+          src={logos[logo]}
+          crop={logoCrop}
+          initials={logoInitials}
+          org={org}
+        />
         <div className="min-w-0 flex-1">
           <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
             <div>
