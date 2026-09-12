@@ -20,14 +20,18 @@ export const Home = () => {
   return (
     <div id="top" className="min-h-screen text-left">
       <Nav />
-      <main className="mx-auto flex w-full max-w-3xl flex-col gap-16 px-6 py-10">
-        <div className="flex flex-col gap-6">
+      <main className="flex flex-col gap-16 overflow-x-visible py-10">
+        <div className="flex flex-col gap-8">
           <Hero />
-          <LatestShip />
+          <div className="mx-auto w-full max-w-3xl px-6">
+            <LatestShip />
+          </div>
         </div>
-        <ExperienceSection />
-        <ProjectsSection />
-        <SkillsSection />
+        <div className="mx-auto flex w-full max-w-3xl flex-col gap-16 px-6">
+          <ExperienceSection />
+          <ProjectsSection />
+          <SkillsSection />
+        </div>
       </main>
       <ContactSection />
     </div>
