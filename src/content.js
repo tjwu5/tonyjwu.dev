@@ -47,12 +47,13 @@ export const hero = {
   education: [
     {
       logo: "sfu",
+      knock: "white",
       school: profile.school,
       detail: `${profile.degree}, Minor in ${profile.minor} · ${profile.graduation}`,
     },
     {
       logo: "hku",
-      logoCrop: "hku",
+      knock: "black",
       school: "University of Hong Kong",
       detail: "Computing Science exchange · Fall 2026",
     },
