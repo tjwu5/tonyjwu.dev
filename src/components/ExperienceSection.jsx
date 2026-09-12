@@ -1,42 +1,6 @@
 import { useState } from "react";
 import { experience, leadership } from "@/content";
 
-function RoleCard({ role, org, context, dates, location, bullets, compact = false }) {
-  return (
-    <article
-      className={
-        compact
-          ? "border-l border-border py-1 pl-4"
-          : "border border-border p-4"
-      }
-    >
-      <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-        <div>
-          <h3 className={compact ? "text-sm font-semibold" : "font-semibold"}>
-            {role}
-          </h3>
-          <p className="text-sm">{org}</p>
-          {context ? <p className="text-xs os-muted">{context}</p> : null}
-        </div>
-        <p className="text-xs os-muted sm:text-right">
-          {dates}
-          {location ? (
-            <>
-              <br />
-              {location}
-            </>
-          ) : null}
-        </p>
-      </div>
-      <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
-        {bullets.map((bullet) => (
-          <li key={bullet}>{bullet}</li>
-        ))}
-      </ul>
-    </article>
-  );
-}
-
 function ExperienceCard({
   id,
   role,
@@ -123,9 +87,14 @@ export const ExperienceSection = () => {
         <h2 className="text-sm font-semibold tracking-wide os-muted">
           Leadership
         </h2>
-        <div className="space-y-5">
+        <div className="space-y-4">
           {leadership.map((item) => (
-            <RoleCard key={item.id} {...item} compact />
+            <ExperienceCard
+              key={item.id}
+              {...item}
+              open={openId === item.id}
+              onToggle={() => toggle(item.id)}
+            />
           ))}
         </div>
       </div>
