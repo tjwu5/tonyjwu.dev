@@ -16,7 +16,7 @@ const logos = {
 
 function OrgMark({ src, crop, initials, org }) {
   return (
-    <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-foreground/15 bg-card">
+    <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-sm border border-foreground/15 bg-card">
       {src ? (
         <img
           src={src}

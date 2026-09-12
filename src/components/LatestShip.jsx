@@ -6,7 +6,7 @@ export function LatestShip() {
   if (!entry) return null;
 
   return (
-    <aside className="rounded-[32px] border border-foreground/20 px-5 py-4 transition-[border-color] duration-150 hover:border-accent/55 focus-within:border-accent/55">
+    <aside className="rounded-sm border border-foreground/20 px-5 py-4 transition-[border-color] duration-150 hover:border-accent/55 focus-within:border-accent/55">
       <p className="font-mono text-xs uppercase tracking-[0.14em] text-accent">
         Latest
       </p>

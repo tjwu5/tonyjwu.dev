@@ -62,7 +62,7 @@ export const Nav = () => {
       <div className="h-[4.75rem]" aria-hidden="true" />
       <header className="fixed top-0 right-0 left-0 z-20 px-6 pt-4">
         <nav
-          className={`mx-auto flex w-full max-w-3xl flex-col overflow-hidden rounded-[32px] border border-foreground/20 bg-foreground/90 text-background backdrop-blur-md transition-all duration-300 sm:h-14 sm:flex-row sm:items-center sm:justify-between sm:px-5 ${
+          className={`mx-auto flex w-full max-w-3xl flex-col overflow-hidden rounded-sm border border-foreground/20 bg-foreground/90 text-background backdrop-blur-md transition-all duration-300 sm:h-14 sm:flex-row sm:items-center sm:justify-between sm:px-5 ${
             open ? "h-[26rem]" : "h-14"
           }`}
           aria-label="Primary"
