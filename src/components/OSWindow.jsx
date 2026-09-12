@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 
 export const OSWindow = ({
   title,
@@ -6,6 +6,7 @@ export const OSWindow = ({
   onFocus,
   onMinimize,
   onToggleZoom,
+  onMove,
   zIndex,
   isOpen,
   position,
@@ -15,6 +16,9 @@ export const OSWindow = ({
   titleFlash,
   children,
 }) => {
+  const panelRef = useRef(null);
+  const dragStateRef = useRef(null);
+
   const panelStyle = useMemo(() => ({
     width: position?.width ? `${position.width}px` : "clamp(480px, 70vw, 90vw)",
     height: isZoomed ? "80vh" : "fit-content",
@@ -28,17 +32,77 @@ export const OSWindow = ({
     ...animationStyle,
   }), [isZoomed, animationStyle, position, zIndex]);
 
+  const handleTitlePointerDown = (event) => {
+    if (!onMove || isZoomed || event.button !== 0) return;
+    if (event.target.closest('[data-no-drag="true"]')) return;
+
+    event.preventDefault();
+    onFocus?.();
+
+    const panel = panelRef.current;
+    const width = position?.width ?? panel?.offsetWidth ?? 480;
+    const height = panel?.offsetHeight ?? 360;
+    const originX = position?.x ?? 16;
+    const originY = position?.y ?? 16;
+
+    dragStateRef.current = {
+      startX: event.clientX,
+      startY: event.clientY,
+      originX,
+      originY,
+      width,
+      height,
+      pointerId: event.pointerId,
+    };
+
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const handleTitlePointerMove = (event) => {
+    const drag = dragStateRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+
+    const dx = event.clientX - drag.startX;
+    const dy = event.clientY - drag.startY;
+    const edgePadding = 16;
+    const topBarHeight = 48;
+    const minX = edgePadding;
+    const minY = edgePadding + topBarHeight;
+    const maxX = Math.max(minX, window.innerWidth - drag.width - edgePadding);
+    const maxY = Math.max(minY, window.innerHeight - drag.height - edgePadding);
+
+    onMove({
+      x: Math.min(maxX, Math.max(minX, drag.originX + dx)),
+      y: Math.min(maxY, Math.max(minY, drag.originY + dy)),
+    });
+  };
+
+  const endDrag = (event) => {
+    const drag = dragStateRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    dragStateRef.current = null;
+    if (event.currentTarget.hasPointerCapture?.(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+  };
+
   return (
     <div
+      ref={panelRef}
       className={`os-panel os-window fixed border shadow-md flex flex-col ${isOpen ? "os-window--open" : ""}`}
       style={panelStyle}
       data-window={windowId}
       onPointerDown={onFocus}
       role="dialog"
       aria-label={title}
+      aria-modal="true"
     >
       <div
         className={`os-titlebar flex items-center justify-between border-b px-3 py-2 select-none os-titlebar-glow ${titleFlash ? "os-titlebar-flash" : ""}`}
+        onPointerDown={handleTitlePointerDown}
+        onPointerMove={handleTitlePointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
       >
         <div
           className="flex items-center gap-2"
@@ -96,7 +160,7 @@ export const OSWindow = ({
           />
         </div>
         <div
-          className="flex-1 text-center text-sm font-semibold text-foreground cursor-move"
+          className={`flex-1 text-center text-sm font-semibold text-foreground ${isZoomed ? "cursor-default" : "cursor-move"}`}
         >
           {title}
         </div>

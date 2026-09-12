@@ -10,6 +10,7 @@ const SocialButtons = () => {
         href="https://github.com/tjwu5"
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="GitHub"
         className="flex justify-center items-center w-12 h-12 rounded-full bg-[#333] hover:bg-gray-100 shadow-sm transition duration-300"
       >
         <svg
@@ -26,6 +27,7 @@ const SocialButtons = () => {
         href="https://www.linkedin.com/in/tonyjxwu/"
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="LinkedIn"
         className="flex justify-center items-center w-12 h-12 rounded-full bg-[#0077b5] hover:bg-gray-100 shadow-sm transition duration-300 text-gray-100 hover:text-[#0077b5]"
     >
         {/* Fixed SVG Icon */}
@@ -44,6 +46,7 @@ const SocialButtons = () => {
         href="https://www.facebook.com/profile.php?id=100014711859459"
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="Facebook"
         className="flex justify-center items-center w-12 h-12 rounded-full bg-[#3b5998] hover:bg-gray-100 shadow-sm transition duration-300"
       >
         <svg
@@ -60,6 +63,7 @@ const SocialButtons = () => {
         href="https://www.instagram.com/tj.wu_/"
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="Instagram"
         className="flex justify-center items-center w-12 h-12 rounded-full bg-[#c13584] hover:bg-gray-100 shadow-sm transition duration-300"
       >
         <svg

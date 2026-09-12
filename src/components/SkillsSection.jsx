@@ -1,4 +1,4 @@
-import SkillBar from "./SkillBar.jsx"
+import SkillBar from "./SkillBar.jsx";
 
 const webDevSkills = [
     { name: "JavaScript (ES6+)", level: 90 },
