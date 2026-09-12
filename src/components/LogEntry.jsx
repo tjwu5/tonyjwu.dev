@@ -4,7 +4,7 @@ export function LogEntry({ id, date, tags, summary, highlights }) {
   return (
     <article
       id={id}
-      className="rounded-[32px] border border-foreground/20 px-5 py-4"
+      className="rounded-sm border border-foreground/20 px-5 py-4"
     >
       <div className="flex flex-wrap items-center gap-2">
         <p className="font-mono text-xs os-muted">{formatLogDate(date)}</p>
