@@ -166,9 +166,10 @@ export const featuredProjects = [
       "Built real-time posture detection with MediaPipe and OpenCV, trained on 50+ labeled images.",
     ],
     live: null,
+    demo: "typr",
     repo: "https://github.com/angelo-yap/keyboard-trainer",
     devNote: [
-      "No live demo — it’s an Electron desktop MVP, so the proof is the repo.",
+      "No live URL — it’s an Electron desktop MVP. The clip on this card is the running app.",
       "The posture model was trained on 50+ labeled images: enough to run in real time, not a production set.",
     ],
   },
@@ -265,7 +266,7 @@ export const skillNotes = {
   "REST APIs":
     "EasyChart — charts render async through the QuickChart API.",
   Electron:
-    "Typr — Electron desktop MVP; no live demo, the proof is the repo.",
+    "Typr — Electron desktop MVP; no live URL, the clip on the work card is the running app.",
 };
 
 export const contact = {
