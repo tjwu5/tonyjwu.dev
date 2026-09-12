@@ -118,7 +118,11 @@ function AdditionalCard({
   live,
   repo,
   devNote,
+  open,
+  onToggle,
 }) {
+  const bulletsId = `project-bullets-${id}`;
+
   return (
     <article className="border-l border-border py-1 pl-4">
       <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
@@ -139,18 +143,38 @@ function AdditionalCard({
           ))}
         </div>
       </div>
-      <ul className="mt-3 list-disc space-y-1 pl-5 text-sm os-muted">
-        {bullets.map((bullet) => (
-          <li key={bullet}>{bullet}</li>
-        ))}
-      </ul>
-      <DevNote id={id} lines={devNote} />
       <ProjectLinks live={live} repo={repo} />
+      <button
+        type="button"
+        className="mt-1 inline-flex min-h-11 items-center text-sm os-muted underline-offset-4 hover:underline"
+        aria-expanded={open}
+        aria-controls={bulletsId}
+        onClick={onToggle}
+      >
+        Details
+      </button>
+      {open ? (
+        <ul
+          id={bulletsId}
+          className="mt-2 list-disc space-y-1 pl-5 text-sm os-muted"
+        >
+          {bullets.map((bullet) => (
+            <li key={bullet}>{bullet}</li>
+          ))}
+        </ul>
+      ) : null}
+      <DevNote id={id} lines={devNote} />
     </article>
   );
 }
 
 export const ProjectsSection = () => {
+  const [openId, setOpenId] = useState(null);
+
+  const toggle = (id) => {
+    setOpenId((current) => (current === id ? null : id));
+  };
+
   return (
     <section id="work" className="scroll-mt-24 space-y-8">
       <div className="space-y-4">
@@ -163,7 +187,12 @@ export const ProjectsSection = () => {
         <h3 className="text-sm font-semibold tracking-wide os-muted">Additional</h3>
         <div className="space-y-5">
           {additionalProjects.map((project) => (
-            <AdditionalCard key={project.id} {...project} />
+            <AdditionalCard
+              key={project.id}
+              {...project}
+              open={openId === project.id}
+              onToggle={() => toggle(project.id)}
+            />
           ))}
         </div>
       </div>
