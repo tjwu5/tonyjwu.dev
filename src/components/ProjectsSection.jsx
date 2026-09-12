@@ -275,7 +275,7 @@ export const ProjectsSection = () => {
   return (
     <section id="work" className="scroll-mt-24 space-y-8">
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold sm:text-xl">Selected work</h2>
+        <h2 className="text-lg font-semibold sm:text-xl">Spotlight Project</h2>
         {featuredProjects.map((project) => (
           <FeaturedCard key={project.id} {...project} />
         ))}

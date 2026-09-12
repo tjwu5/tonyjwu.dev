@@ -118,9 +118,9 @@ export const leadership = [
   },
   {
     id: "esports",
-    role: "External Coordinator",
+    role: "External Relations Coordinator",
     org: "SFU Esports",
-    dates: "Present",
+    dates: "June 2026 - Present",
     location: "Burnaby, BC",
     onResume: false,
     needsCopy: true,
