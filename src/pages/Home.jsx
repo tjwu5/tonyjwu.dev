@@ -12,9 +12,7 @@ export const Home = () => {
       <main className="mx-auto flex w-full max-w-3xl flex-col gap-16 px-6 py-10">
         <Hero />
         <ExperienceSection />
-        <section id="work" className="scroll-mt-24">
-          <ProjectsSection />
-        </section>
+        <ProjectsSection />
         <SkillsSection />
         <ContactSection />
       </main>
