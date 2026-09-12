@@ -44,12 +44,20 @@ export const hero = {
   kicker: "Intern / co-op",
   name: profile.name,
   headline: profile.headline,
-  meta: [
-    `${profile.school} — ${profile.degree}, Minor in ${profile.minor}`,
-    profile.graduation,
-    profile.exchange,
-    profile.location,
+  education: [
+    {
+      logo: "sfu",
+      school: profile.school,
+      detail: `${profile.degree}, Minor in ${profile.minor} · ${profile.graduation}`,
+    },
+    {
+      logo: "hku",
+      logoCrop: "hku",
+      school: "University of Hong Kong",
+      detail: "Computing Science exchange · Fall 2026",
+    },
   ],
+  location: profile.location,
   awards: [
     "StormForge Hackathon — 2nd place (Typr)",
     "Lord Strathcona Trust Fund Medal",
