@@ -19,7 +19,7 @@ export const profile = {
   name: "Tony Wu",
   legalName: "Tony J. Wu",
   headline:
-    "SFU Computing Science student (Business minor) seeking internships in software, product, and tech consulting.",
+    "Developer with a product mindset, bridging solid technical systems with user-first design. Seeking software and tech consulting internships.",
   school: "Simon Fraser University",
   degree: "BSc Computing Science",
   minor: "Business Administration",
@@ -41,19 +41,24 @@ export const nav = [
 ];
 
 export const hero = {
-  kicker: "Intern / co-op",
+  kicker: "CS + Business @ SFU",
   name: profile.name,
   headline: profile.headline,
-  meta: [
-    `${profile.school} — ${profile.degree}, Minor in ${profile.minor}`,
-    profile.graduation,
-    profile.exchange,
-    profile.location,
+  education: [
+    {
+      logo: "sfu",
+      knock: "white",
+      school: profile.school,
+      detail: `${profile.degree}, Minor in ${profile.minor} · ${profile.graduation}`,
+    },
+    {
+      logo: "hku",
+      knock: "black",
+      school: "University of Hong Kong",
+      detail: "Computing Science exchange · Fall 2026",
+    },
   ],
-  awards: [
-    "StormForge Hackathon — 2nd place (Typr)",
-    "Lord Strathcona Trust Fund Medal",
-  ],
+  location: profile.location,
   primaryCtas: [
     { label: "Resume PDF", href: profile.resumePath, external: true },
     { label: "Email", href: `mailto:${profile.email}` },
@@ -70,6 +75,9 @@ export const experience = [
     context: "Strategic advisory engagement",
     dates: "May 2026 – Aug 2026",
     location: "Burnaby, BC",
+    lede: "5-person consulting team on an executive-search visibility strategy, tied to provincial regulatory requirements.",
+    logo: "tsbc",
+    logoCrop: "left",
     bullets: [
       "Led a 5-person consulting team on an executive-search visibility strategy, tying internal discovery workflows to provincial regulatory requirements.",
       "Wrote the project charter, work breakdown structure, and delivery roadmap for a 13-week engagement, and hit the agreed milestones.",
@@ -83,6 +91,8 @@ export const experience = [
     context: "Extern engagement",
     dates: "Nov 2025 – Dec 2025",
     location: "Remote",
+    lede: "User research and competitive benchmarking to prioritize 3 features with a projected 10% lift in daily active users.",
+    logo: "bereal",
     bullets: [
       "Combined user research and competitive benchmarking to prioritize 3 features with a projected 10% lift in daily active users.",
       "Iterated prototypes through 5+ review cycles with senior product leads to check what was technically feasible.",
@@ -99,6 +109,8 @@ export const leadership = [
     dates: "Aug 2026 – Present",
     location: "Burnaby, BC",
     onResume: true,
+    lede: "Marketing and outreach across 16+ university teams, sponsors, and industry partners.",
+    logo: "caseit",
     bullets: [
       "Run marketing and outreach for CaseIT across 16+ university teams, sponsors, and industry partners.",
       "Own channel analytics, the content calendar, and brand positioning across student touchpoints.",
@@ -106,12 +118,15 @@ export const leadership = [
   },
   {
     id: "esports",
-    role: "External Coordinator",
+    role: "External Relations Coordinator",
     org: "SFU Esports",
-    dates: "Present",
+    dates: "June 2026 - Present",
     location: "Burnaby, BC",
     onResume: false,
     needsCopy: true,
+    lede: "Coordinate external partnerships and outreach for SFU Esports.",
+    logo: "esports",
+    logoCrop: "cover",
     bullets: [
       "Coordinate external partnerships and outreach for SFU Esports.",
     ],
@@ -123,6 +138,9 @@ export const leadership = [
     dates: "Summers 2022 – 2024",
     location: "Comox / Vernon, BC",
     onResume: true,
+    lede: "Promoted twice across 3 summer deployments to Company Sergeant Major, responsible for 100+ staff and 1,000+ cadets.",
+    logo: "cadets",
+    logoCrop: "cover",
     bullets: [
       "Promoted twice across 3 summer deployments to Company Sergeant Major, responsible for 100+ staff and 1,000+ cadets.",
       "Moved from classroom instruction to operations: daily stand-ups, cross-unit planning, and performance reviews to unstick logistics between groups.",
@@ -148,7 +166,12 @@ export const featuredProjects = [
       "Built real-time posture detection with MediaPipe and OpenCV, trained on 50+ labeled images.",
     ],
     live: null,
+    demo: "typr",
     repo: "https://github.com/angelo-yap/keyboard-trainer",
+    devNote: [
+      "No live URL — it’s an Electron desktop MVP. The clip on this card is the running app.",
+      "The posture model was trained on 50+ labeled images: enough to run in real time, not a production set.",
+    ],
   },
 ];
 
@@ -169,6 +192,9 @@ export const additionalProjects = [
     ],
     live: "https://findmypath.streamlit.app/",
     repo: "https://github.com/tjwu5/CMPT310-Project",
+    devNote: [
+      "The 15% accuracy lift is LightGBM tuned against KNN and decision-tree baselines on this 4,000+ record set.",
+    ],
   },
   {
     id: "easychart",
@@ -186,6 +212,9 @@ export const additionalProjects = [
     ],
     live: "https://easychart-omega.vercel.app/",
     repo: "https://github.com/CMPT-276-SUMMER-2025/final-project-5-lakes",
+    devNote: [
+      "Charts render async through the QuickChart API; GitHub Actions was how a 4-person team shipped without a manual release.",
+    ],
   },
 ];
 
@@ -216,6 +245,28 @@ export const skills = {
     "PostgreSQL",
     "Electron",
   ],
+};
+
+/** One-line chip notes. Keys must match a skill label. Skills with nothing real to say stay mute. */
+export const skillNotes = {
+  PRDs: "Typr — wrote the PRDs and ran Agile sprints for 4 months; 8 user tests changed the UX.",
+  "Work breakdown structures":
+    "Technical Safety BC — wrote the charter, work breakdown structure, and delivery roadmap for a 13-week engagement.",
+  "Agile / Scrum":
+    "Typr — ran Agile sprints over 4 months with a team of 4.",
+  "Stakeholder alignment":
+    "Technical Safety BC — presented 3 recommendations to executive evaluators; leadership used the roadmap after the engagement.",
+  "KPI definition":
+    "BeReal — closed with KPI-based recommendations so the proposed work lined up with growth targets.",
+  Python:
+    "FindMyPath — a Python pipeline with pandas cleaning and features on 4,000+ records.",
+  "Market benchmarking":
+    "BeReal — user research and competitive benchmarking to prioritize 3 features with a projected 10% lift in daily active users.",
+  React: "EasyChart — led the React frontend and async chart rendering against QuickChart.",
+  "REST APIs":
+    "EasyChart — charts render async through the QuickChart API.",
+  Electron:
+    "Typr — Electron desktop MVP; no live URL, the clip on the work card is the running app.",
 };
 
 export const contact = {
