@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { hero, profile } from "@/content";
+import portrait from "@/assets/images/profilephoto.jpg";
 import sfuLogo from "@/assets/images/SFU.png";
 import hkuLogo from "@/assets/images/HKU.png";
 
@@ -151,49 +152,62 @@ function EmailCta({ href, email }) {
 export const Hero = () => {
   return (
     <section className="flex flex-col gap-6">
-      <p className="inline-flex w-fit rounded-full border border-foreground/15 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.14em] os-muted">
-        {hero.kicker}
-      </p>
-      <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-        {hero.name}
-      </h1>
-      <p className="max-w-2xl text-base leading-relaxed os-muted sm:text-lg">
-        {hero.headline}
-      </p>
-      <div className="flex flex-wrap gap-2">
-        {hero.primaryCtas.map((cta) =>
-          cta.label === "Email" ? (
-            <EmailCta key={cta.label} href={cta.href} email={profile.email} />
-          ) : cta.label === "Resume PDF" ? (
-            <a
-              key={cta.label}
-              href={cta.href}
-              {...externalProps(cta.external)}
-              className={ctaPrimaryClass}
-            >
-              {cta.label}
-            </a>
-          ) : (
-            <a
-              key={cta.label}
-              href={cta.href}
-              {...externalProps(cta.external)}
-              className={ctaClass}
-            >
-              {cta.label}
-            </a>
-          ),
-        )}
-        {hero.secondaryCtas.map((cta) => (
-          <a
-            key={cta.label}
-            href={cta.href}
-            {...externalProps(cta.external)}
-            className="inline-flex min-h-11 items-center px-3 py-2 text-sm os-muted underline-offset-4 hover:underline"
-          >
-            {cta.label}
-          </a>
-        ))}
+      <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
+        <div className="flex min-w-0 flex-1 flex-col gap-5">
+          <p className="inline-flex w-fit rounded-full border border-foreground/15 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.14em] os-muted">
+            {hero.kicker}
+          </p>
+          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+            {hero.name}
+          </h1>
+          <p className="max-w-xl text-base leading-relaxed os-muted sm:text-lg">
+            {hero.headline}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {hero.primaryCtas.map((cta) =>
+              cta.label === "Email" ? (
+                <EmailCta key={cta.label} href={cta.href} email={profile.email} />
+              ) : cta.label === "Resume PDF" ? (
+                <a
+                  key={cta.label}
+                  href={cta.href}
+                  {...externalProps(cta.external)}
+                  className={ctaPrimaryClass}
+                >
+                  {cta.label}
+                </a>
+              ) : (
+                <a
+                  key={cta.label}
+                  href={cta.href}
+                  {...externalProps(cta.external)}
+                  className={ctaClass}
+                >
+                  {cta.label}
+                </a>
+              ),
+            )}
+            {hero.secondaryCtas.map((cta) => (
+              <a
+                key={cta.label}
+                href={cta.href}
+                {...externalProps(cta.external)}
+                className="inline-flex min-h-11 items-center px-3 py-2 text-sm os-muted underline-offset-4 hover:underline"
+              >
+                {cta.label}
+              </a>
+            ))}
+          </div>
+        </div>
+        <div className="mx-auto w-full max-w-[16rem] shrink-0 self-center overflow-hidden rounded-[32px] border border-foreground/20 sm:mx-0 sm:w-56 sm:max-w-none sm:self-auto">
+          <img
+            src={portrait}
+            alt="Tony Wu"
+            width={640}
+            height={640}
+            className="aspect-square w-full object-cover object-[center_20%]"
+          />
+        </div>
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
         {hero.education.map((row) => (
