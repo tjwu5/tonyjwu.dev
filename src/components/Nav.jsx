@@ -1,10 +1,12 @@
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 import { nav, profile } from "@/content";
 
 const linkClass =
-  "inline-flex min-h-11 items-center px-2 font-mono text-xs uppercase tracking-[0.14em] text-background/70 hover:text-background";
+  "inline-flex min-h-11 w-full items-center justify-center px-2 font-mono text-xs uppercase tracking-[0.14em] text-background/70 hover:text-background sm:w-auto";
 const activeLinkClass =
-  "inline-flex min-h-11 items-center px-2 font-mono text-xs uppercase tracking-[0.14em] font-medium text-background";
+  "inline-flex min-h-11 w-full items-center justify-center px-2 font-mono text-xs uppercase tracking-[0.14em] font-medium text-background sm:w-auto";
 
 function BrandMark() {
   return (
@@ -18,7 +20,7 @@ function BrandMark() {
   );
 }
 
-function BrandLink({ className, toHome }) {
+function BrandLink({ toHome }) {
   const content = (
     <>
       <BrandMark />
@@ -26,20 +28,19 @@ function BrandLink({ className, toHome }) {
     </>
   );
 
-  const shared = {
-    className: `inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-background ${className ?? ""}`.trim(),
-  };
+  const className =
+    "inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap text-sm font-semibold text-background";
 
   if (toHome) {
     return (
-      <Link to="/" {...shared}>
+      <Link to="/" className={className}>
         {content}
       </Link>
     );
   }
 
   return (
-    <a href="#top" {...shared}>
+    <a href="#top" className={className}>
       {content}
     </a>
   );
@@ -48,17 +49,49 @@ function BrandLink({ className, toHome }) {
 export const Nav = () => {
   const { pathname } = useLocation();
   const onHome = pathname === "/";
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  const close = () => setOpen(false);
 
   return (
     <>
       <div className="h-[4.75rem]" aria-hidden="true" />
       <header className="fixed top-0 right-0 left-0 z-20 px-6 pt-4">
         <nav
-          className="mx-auto flex min-h-14 w-full max-w-3xl items-center justify-between gap-3 rounded-[32px] border border-foreground/20 bg-foreground/90 px-4 text-background backdrop-blur-md sm:h-14 sm:px-5"
+          className="mx-auto flex w-full max-w-3xl flex-col overflow-hidden rounded-[32px] border border-foreground/20 bg-foreground/90 text-background backdrop-blur-md sm:h-14 sm:flex-row sm:items-center sm:justify-between sm:px-5"
           aria-label="Primary"
         >
-          <BrandLink toHome={!onHome} />
-          <ul className="flex flex-wrap items-center justify-end gap-x-0.5">
+          <div className="flex h-14 w-full items-center justify-between gap-3 px-4 sm:contents sm:px-0">
+            <BrandLink toHome={!onHome} />
+            <button
+              type="button"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center sm:hidden"
+              aria-expanded={open}
+              aria-controls="primary-nav-links"
+              onClick={() => setOpen((value) => !value)}
+            >
+              {open ? (
+                <X className="size-5" aria-hidden="true" />
+              ) : (
+                <Menu className="size-5" aria-hidden="true" />
+              )}
+              <span className="sr-only">
+                {open ? "Close menu" : "Open menu"}
+              </span>
+            </button>
+          </div>
+          <ul
+            id="primary-nav-links"
+            className={
+              open
+                ? "flex flex-col items-stretch px-2 pb-3 sm:flex sm:flex-row sm:items-center sm:px-0 sm:pb-0"
+                : "hidden sm:flex sm:flex-row sm:items-center"
+            }
+          >
             {nav.map((item) => (
               <li key={item.id}>
                 {item.external ? (
@@ -67,6 +100,7 @@ export const Nav = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={linkClass}
+                    onClick={close}
                   >
                     {item.label}
                   </a>
@@ -74,6 +108,7 @@ export const Nav = () => {
                   <a
                     href={onHome ? item.href : `/${item.href}`}
                     className={linkClass}
+                    onClick={close}
                   >
                     {item.label}
                   </a>
@@ -84,6 +119,7 @@ export const Nav = () => {
               <Link
                 to="/log"
                 className={pathname === "/log" ? activeLinkClass : linkClass}
+                onClick={close}
               >
                 Log
               </Link>
