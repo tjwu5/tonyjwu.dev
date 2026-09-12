@@ -1,7 +1,40 @@
-import { hero } from "@/content";
+import { useEffect, useRef, useState } from "react";
+import { hero, profile } from "@/content";
 
 const externalProps = (isExternal) =>
   isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {};
+
+const ctaClass =
+  "os-button inline-flex min-h-11 items-center border px-4 py-2 text-sm font-semibold";
+
+function EmailCta({ href, email }) {
+  const [copied, setCopied] = useState(false);
+  const copiedTimer = useRef(0);
+
+  useEffect(() => {
+    return () => window.clearTimeout(copiedTimer.current);
+  }, []);
+
+  const onClick = async (event) => {
+    if (!navigator.clipboard?.writeText) return;
+
+    event.preventDefault();
+    try {
+      await navigator.clipboard.writeText(email);
+      setCopied(true);
+      window.clearTimeout(copiedTimer.current);
+      copiedTimer.current = window.setTimeout(() => setCopied(false), 1000);
+    } catch {
+      window.location.href = href;
+    }
+  };
+
+  return (
+    <a href={href} onClick={onClick} className={ctaClass} aria-live="polite">
+      {copied ? "Copied" : "Email"}
+    </a>
+  );
+}
 
 export const Hero = () => {
   return (
@@ -20,16 +53,20 @@ export const Hero = () => {
       </ul>
       <p className="text-sm os-muted">{hero.awards.join(" · ")}</p>
       <div className="flex flex-wrap gap-2">
-        {hero.primaryCtas.map((cta) => (
-          <a
-            key={cta.label}
-            href={cta.href}
-            {...externalProps(cta.external)}
-            className="os-button inline-flex min-h-11 items-center border px-4 py-2 text-sm font-semibold"
-          >
-            {cta.label}
-          </a>
-        ))}
+        {hero.primaryCtas.map((cta) =>
+          cta.label === "Email" ? (
+            <EmailCta key={cta.label} href={cta.href} email={profile.email} />
+          ) : (
+            <a
+              key={cta.label}
+              href={cta.href}
+              {...externalProps(cta.external)}
+              className={ctaClass}
+            >
+              {cta.label}
+            </a>
+          ),
+        )}
         {hero.secondaryCtas.map((cta) => (
           <a
             key={cta.label}
