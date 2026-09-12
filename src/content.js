@@ -101,6 +101,7 @@ export const leadership = [
     dates: "Aug 2026 – Present",
     location: "Burnaby, BC",
     onResume: true,
+    lede: "Marketing and outreach across 16+ university teams, sponsors, and industry partners.",
     bullets: [
       "Run marketing and outreach for CaseIT across 16+ university teams, sponsors, and industry partners.",
       "Own channel analytics, the content calendar, and brand positioning across student touchpoints.",
@@ -114,6 +115,7 @@ export const leadership = [
     location: "Burnaby, BC",
     onResume: false,
     needsCopy: true,
+    lede: "Coordinate external partnerships and outreach for SFU Esports.",
     bullets: [
       "Coordinate external partnerships and outreach for SFU Esports.",
     ],
@@ -125,6 +127,7 @@ export const leadership = [
     dates: "Summers 2022 – 2024",
     location: "Comox / Vernon, BC",
     onResume: true,
+    lede: "Promoted twice across 3 summer deployments to Company Sergeant Major, responsible for 100+ staff and 1,000+ cadets.",
     bullets: [
       "Promoted twice across 3 summer deployments to Company Sergeant Major, responsible for 100+ staff and 1,000+ cadets.",
       "Moved from classroom instruction to operations: daily stand-ups, cross-unit planning, and performance reviews to unstick logistics between groups.",
