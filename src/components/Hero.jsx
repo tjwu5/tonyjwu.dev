@@ -157,9 +157,12 @@ export const Hero = () => {
           <p className="inline-flex w-fit rounded-sm border border-foreground/15 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.14em] os-muted">
             {hero.kicker}
           </p>
-          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-            {hero.name}
-          </h1>
+          <div>
+            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+              {hero.name}
+            </h1>
+            <p className="mt-1 text-sm os-muted">{hero.location}</p>
+          </div>
           <p className="max-w-xl text-base leading-relaxed os-muted sm:text-lg">
             {hero.headline}
           </p>
@@ -228,9 +231,6 @@ export const Hero = () => {
           </figure>
         ))}
       </div>
-      <p className="text-sm os-muted">
-        {hero.location} · {hero.awards.join(" · ")}
-      </p>
     </section>
   );
 };
