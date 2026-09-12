@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { additionalProjects, featuredProjects } from "@/content";
 
 function ProjectLinks({ live, repo }) {
@@ -29,7 +30,49 @@ function ProjectLinks({ live, repo }) {
   );
 }
 
-function FeaturedCard({ name, role, org, dates, award, summary, tags, bullets, live, repo }) {
+function DevNote({ id, lines }) {
+  const [open, setOpen] = useState(false);
+
+  if (!Array.isArray(lines) || lines.length === 0) return null;
+
+  const noteId = `dev-note-${id}`;
+
+  return (
+    <div className="mt-4">
+      <button
+        type="button"
+        className="inline-flex min-h-11 items-center text-sm os-muted underline-offset-4 hover:underline"
+        aria-expanded={open}
+        aria-controls={noteId}
+        onClick={() => setOpen((value) => !value)}
+      >
+        Dev note
+      </button>
+      {open ? (
+        <ul id={noteId} className="mt-2 list-disc space-y-1 pl-5 text-sm os-muted">
+          {lines.map((line) => (
+            <li key={line}>{line}</li>
+          ))}
+        </ul>
+      ) : null}
+    </div>
+  );
+}
+
+function FeaturedCard({
+  id,
+  name,
+  role,
+  org,
+  dates,
+  award,
+  summary,
+  tags,
+  bullets,
+  live,
+  repo,
+  devNote,
+}) {
   return (
     <article className="border border-border p-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -57,6 +100,7 @@ function FeaturedCard({ name, role, org, dates, award, summary, tags, bullets, l
           <li key={bullet}>{bullet}</li>
         ))}
       </ul>
+      <DevNote id={id} lines={devNote} />
       <ProjectLinks live={live} repo={repo} />
     </article>
   );
