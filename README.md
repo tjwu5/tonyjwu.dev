@@ -1,15 +1,14 @@
 # Tony Wu — Portfolio
 
-Personal portfolio website showcasing my projects, experience, and contact information.
+Personal site for intern / co-op recruiting: experience, selected work, skills, and resume.
 
-## Tech Stack
+## Tech stack
 
 - React
 - Vite
 - Tailwind CSS
-- Node.js / npm
 
-## Local Development
+## Local development
 
 ```bash
 npm install
@@ -21,27 +20,29 @@ npm run build
 npm run preview
 ```
 
-## Project Structure
+## Content
 
-- `src/components` — UI components and section modules
-- `src/pages` — page-level layout and routing
-- `src/assets` — images and design assets
-- `public` — static files (resume, audio, etc.)
-- `src/index.css` — global styles and theme tokens
+All recruiter-facing copy lives in [`src/content.js`](src/content.js). Edit that file, not the section components, so the page stays aligned with [`public/Resume_TonyWu.pdf`](public/Resume_TonyWu.pdf).
 
-## Customization
+| Surface | Source |
+| --- | --- |
+| Hero, nav, SEO | `profile`, `hero`, `nav`, `seo` |
+| Experience and leadership | `experience`, `leadership` |
+| Featured / additional work | `featuredProjects`, `additionalProjects` |
+| Skills | `skills` |
+| Footer | `contact` |
+| Resume download | `public/Resume_TonyWu.pdf` |
 
-- Projects list: `src/components/ExperienceSection.jsx`
-- About content: `src/components/AboutSection.jsx`
-- Skills content: `src/components/SkillsSection.jsx`
-- Contact details: `src/components/ContactSection.jsx`
-- Resume link: `src/pages/Home.jsx` (downloads from `public/Resume_TonyWu.pdf`)
-- Theme + OS styling: `src/index.css`
-- Background audio: `public/audio/bg.mp3`
+Layout:
+
+- `src/pages/Home.jsx` — page composition
+- `src/components/` — Nav, Hero, Experience, Projects, Skills, footer
+- `src/index.css` — light editorial theme
+- `src/pages/NotFound.jsx` — 404
 
 ## Deployment
 
-This repo includes a deploy script for GitHub Pages:
+GitHub Pages:
 
 ```bash
 npm run build
@@ -51,13 +52,3 @@ npm run deploy
 ## License
 
 MIT — see `LICENSE`.
-
-## Design (Optional)
-
-Wireframe references:
-
-- `src/assets/wireframes/hero.jpg`
-- `src/assets/wireframes/about.jpg`
-- `src/assets/wireframes/skills.jpg`
-- `src/assets/wireframes/experiences.jpg`
-- `src/assets/wireframes/contact.jpg`
