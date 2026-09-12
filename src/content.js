@@ -19,7 +19,7 @@ export const profile = {
   name: "Tony Wu",
   legalName: "Tony J. Wu",
   headline:
-    "I work in software, product, and tech consulting — looking for an internship that uses all three.",
+    "SFU Computing Science student (Business minor) seeking internships in software, product, and tech consulting.",
   school: "Simon Fraser University",
   degree: "BSc Computing Science",
   minor: "Business Administration",
