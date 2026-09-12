@@ -133,7 +133,8 @@ export const leadership = [
     location: "Comox / Vernon, BC",
     onResume: true,
     lede: "Promoted twice across 3 summer deployments to Company Sergeant Major, responsible for 100+ staff and 1,000+ cadets.",
-    logoInitials: "DND",
+    logo: "cadets",
+    logoCrop: "right",
     bullets: [
       "Promoted twice across 3 summer deployments to Company Sergeant Major, responsible for 100+ staff and 1,000+ cadets.",
       "Moved from classroom instruction to operations: daily stand-ups, cross-unit planning, and performance reviews to unstick logistics between groups.",

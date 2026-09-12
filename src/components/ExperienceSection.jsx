@@ -2,10 +2,12 @@ import { useState } from "react";
 import { experience, leadership } from "@/content";
 import tsbcLogo from "@/assets/images/TSBC.svg";
 import berealLogo from "@/assets/images/BEREAL.jpg";
+import cadetsLogo from "@/assets/images/Cadets.webp";
 
 const logos = {
   tsbc: tsbcLogo,
   bereal: berealLogo,
+  cadets: cadetsLogo,
 };
 
 function OrgMark({ src, crop, initials, org }) {
@@ -18,7 +20,9 @@ function OrgMark({ src, crop, initials, org }) {
           className={
             crop === "left"
               ? "size-full object-cover object-left"
-              : "max-h-7 max-w-8 object-contain"
+              : crop === "right"
+                ? "size-full object-cover object-right"
+                : "max-h-7 max-w-8 object-contain"
           }
         />
       ) : (
