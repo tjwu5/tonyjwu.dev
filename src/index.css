@@ -102,6 +102,12 @@
   cursor: pointer;
 }
 
+button.os-chip {
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
 .os-button:hover,
 .os-chip:hover {
   background-color: hsl(var(--accent) / 0.08);
