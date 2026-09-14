@@ -26,7 +26,7 @@ export const entries = [
     highlights: [
       "so i saw a post on instagram from gazisj a few days ago about implementing meme reactions for zoom meetings and i thought: 'i gotta remake that'. so that's exactly what i did, but i added my own spin to it. instead of memes, i uploaded a bunch of a viral hamster pics. i tried it on my friend yesterday through facetime and it worked pretty okay! lots of false detections though, but at least it was detecting something. ok that's it bye.",
     ],
-  }
+  },
   
   {
     id: "2026-09-12-kill-tjwu-os",
